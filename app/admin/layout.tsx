@@ -23,7 +23,7 @@ export default function RootLayout({
                 <SidebarProvider >
                     <AppSidebar />
                     <main className="w-full">
-                        <section className="bg-[#8ce3da] shadow-md p-2">
+                        <section className=" shadow-md p-2">
                             <div className="flex justify-center items-center gap-3">
                                 <Link href='/admin'>
                                     <Image 
@@ -34,7 +34,7 @@ export default function RootLayout({
                                         className="m-auto"
                                     />
                                 </Link>
-                                <h3 className=" font-semibold ">Área Administrativa da Pijamariact</h3>
+                                <h3 className="font-semibold ">Área Administrativa da Pijamariact</h3>
                             </div>
                         </section>
                         
