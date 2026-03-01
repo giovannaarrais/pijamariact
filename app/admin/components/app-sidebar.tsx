@@ -55,7 +55,7 @@ export function AppSidebar() {
     return (
         <Sidebar>
             <SidebarHeader className="bg-[#8ce3da]">
-                <Link href='/admin'>
+                <Link href='/'>
                     <Image 
                         src={'/logo.png'}
                         alt="Logo Pijamariact"
