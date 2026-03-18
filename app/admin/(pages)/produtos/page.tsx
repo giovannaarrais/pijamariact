@@ -1,17 +1,10 @@
 import Container from "@/app/components/Container";
 import { TableComponent } from "../../../components/admin/table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { List, Plus } from "lucide-react";
+import { List, Plus, Shirt } from "lucide-react";
 import Link from "next/link";
+import { fastActionsProps } from "@/app/types/fastActions";
 
-interface fastActionsProps {
-  id: number;
-  title: string;
-  description?: string;
-  icon: React.ReactNode;
-  link: string;
-  color: string;
-}
 export default function ProductsPage() {
   const fastActions: fastActionsProps[] = [
     {
@@ -34,13 +27,20 @@ export default function ProductsPage() {
 
   return (
     <Container>
-      <div>
-        <h3>Ações Rápidas</h3>
+        <Card
+          className={`border-b-3  p-3 gap-1`}
+        >
+            <div className="flex gap-2 mb-0">
+              <Shirt size={20}/>
+              <h4 className={`font-bold text-md`}>Produtos</h4>
+            </div>
+            <p className="text-sm opacity-50">Gerencie todos os seu produtos</p>
+        <h3 className="border-t py-3 mt-3">Ações Rápidas</h3>
         <div className="flex gap-4">
           {fastActions.map((item) => (
             <Card
               key={item.id}
-              className={`border-b-3 border-${item.color} p-3 gap-1`}
+              className={` shadow-none border-${item.color} p-3 gap-1`}
             >
               <Link href={item.link}>
                 <div className="flex gap-2 mb-0">
@@ -52,7 +52,7 @@ export default function ProductsPage() {
             </Card>
           ))}
         </div>
-      </div>
+        </Card>
 
       <section id="produtos">
         <TableComponent

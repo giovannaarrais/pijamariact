@@ -47,7 +47,7 @@ const menuItems: menuItemsProps[] = [
         id: 5,
         name: 'Usuários',
         icon: <Users size={20} />,
-        link: '#'
+        link: '/admin/usuarios'
     }
 ]
 
