@@ -4,11 +4,54 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CreateUserAction } from "@/app/actions/create-user";
+
+const formSchema = z.object({
+    name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
+    email: z.string("E-mail inválido"),
+    password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
+    role: z.enum(["master", "admin", "registered"]),
+})
+
+type FormValues = z.infer<typeof formSchema>
 
 const CriarUsuarioPage = () => {
 
-    function onSubmit(){
+    const router = useRouter()
+    const {register, handleSubmit} = useForm<FormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: "",
+            email: "",
+            password: "",
+            role: "registered"
+        }
+    })
+    
+    
+    async function onSubmit(values: FormValues) {
+        try{
+            const data = await CreateUserAction(values)
+            if(data.success){
+                console.log('usuário criado com sucesso')
+            }
+            console.log(values)
 
+        } catch(error){
+            console.log(error)
+        }
+        // const { data, error } = await authClient.signUp.email({
+        //     name: values.name, // required
+        //     email: values.email, // required
+        //     password:values.password, // required
+        //     callbackURL: "/admin",
+        // });
+
+        // console.log(data)
     }
 
     return ( 
@@ -24,32 +67,39 @@ const CriarUsuarioPage = () => {
             </Card>
             <Card>
                 <CardContent>
-                    <form onSubmit={onSubmit}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className=" grid-cols-4 space-y-3">
                             <Input
                                 id="nome"
                                 type="text"
                                 placeholder="Nome"
+                                {...register("name")}
                                 required
                             />
                             <Input
                                 id="email"
                                 type="email"
                                 placeholder="E-mail"
+                                {...register("email")}
                                 required
                             />
                             <Input 
                                 id="password" 
                                 type="password" 
                                 required 
+                                {...register("password")}
                                 placeholder="Senha"
                             />
-                            <Input 
+                            <select 
                                 id="role" 
                                 type="role" 
+                                {...register("role")}
                                 required 
-                                placeholder="Permissão"
-                            />
+                            >
+                                <option value="master">Master</option>
+                                <option value="admin">Admin</option>
+                                <option value="registered">Registered</option>
+                            </select>
                         </div>
                         <Button type="submit" variant='default' className="w-full mt-4">
                             Acessar
