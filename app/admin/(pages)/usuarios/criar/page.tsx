@@ -3,12 +3,23 @@ import Container from "@/app/components/Container";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { User } from "lucide-react";
+import { Loader2, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateUserAction } from "@/app/actions/create-user";
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import HeaderSection from "@/app/components/admin/headerSection";
+import ErrorInput from "@/app/components/admin/errorInput";
 
 const formSchema = z.object({
     name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
@@ -20,9 +31,10 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>
 
 const CriarUsuarioPage = () => {
-
     const router = useRouter()
-    const {register, handleSubmit} = useForm<FormValues>({
+    const [error, setError] = useState<string | undefined>(undefined)
+
+    const {register, handleSubmit, formState: {errors, isSubmitting}, reset} = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
@@ -35,74 +47,116 @@ const CriarUsuarioPage = () => {
     
     async function onSubmit(values: FormValues) {
         try{
-            const data = await CreateUserAction(values)
-            if(data.success){
-                console.log('usuário criado com sucesso')
+            const response = await CreateUserAction(values)
+            if(!response.success){
+                setError(response.error)
+                return
             }
-            console.log(values)
-
+            
+            reset()
+            console.log('usuário criado com sucesso')
         } catch(error){
             console.log(error)
         }
-        // const { data, error } = await authClient.signUp.email({
-        //     name: values.name, // required
-        //     email: values.email, // required
-        //     password:values.password, // required
-        //     callbackURL: "/admin",
-        // });
-
-        // console.log(data)
     }
 
     return ( 
         <Container>
-            <Card
-                className={`border-b-3  p-3 gap-1`}
-            >
-                <div className="flex gap-2 mb-0">
-                    <User size={20}/>
-                    <h4 className={`font-bold text-md`}>Criar usuário</h4>
-                </div>
-                <p className="text-sm opacity-50">Adicone usuários de acordo com seu nivel de permissão</p>
-            </Card>
+            <HeaderSection
+                title="Criar Usuário"
+                icon={<User size={25}/>}
+                description="Adicione usuários de acordo com seu nivel de permissão"
+            />
+
             <Card>
+                {/* {isSubmitting && ( */}
+                    {/* <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded">
+                        <Loader2 className="animate-spin" size={24} />
+                    </div> */}
+                {/* )} */}
                 <CardContent>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className=" grid-cols-4 space-y-3">
-                            <Input
-                                id="nome"
-                                type="text"
-                                placeholder="Nome"
-                                {...register("name")}
-                                required
-                            />
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="E-mail"
-                                {...register("email")}
-                                required
-                            />
-                            <Input 
-                                id="password" 
-                                type="password" 
-                                required 
-                                {...register("password")}
-                                placeholder="Senha"
-                            />
-                            <select 
-                                id="role" 
-                                type="role" 
-                                {...register("role")}
-                                required 
-                            >
-                                <option value="master">Master</option>
-                                <option value="admin">Admin</option>
-                                <option value="registered">Registered</option>
-                            </select>
+                        <div className="grid grid-cols-2 gap-4">
+                           <div className="relative">
+                             {/* Nome */}
+                                {errors.name && (
+                                    <ErrorInput 
+                                        message={errors.name?.message}
+                                    />
+                                )}
+                                <Input
+                                    id="nome"
+                                    type="text"
+                                    placeholder="Nome"
+                                    {...register("name")}
+                                    required
+                                />
+                           </div>
+                            
+                            <div className="relative">
+                                {/* Email */}
+                                {errors.email && (
+                                    <ErrorInput 
+                                        message={errors.email?.message}
+                                    />
+                                )}
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="E-mail"
+                                    {...register("email")}
+                                    required
+                                />
+                            </div>
+
+                           <div className="relative">
+                                {/* Password */}
+                                {errors.password && (
+                                    <ErrorInput 
+                                        message={errors.password?.message}
+                                    />
+                                )}
+                                <Input 
+                                    id="password" 
+                                    type="password" 
+                                    required 
+                                    {...register("password")}
+                                    placeholder="Senha"
+                                />
+                           </div>
+
+                            <div className="relative">
+                                {/* Permissao */}
+                                {errors.role && (
+                                    <ErrorInput 
+                                        message={errors.role?.message}
+                                    />
+                                )}
+                                <Select
+                                    {...register("role")}
+                                    required 
+                                >
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="Permissão" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                        <SelectItem value="registered">Registrado</SelectItem>
+                                        <SelectItem value="admin">Admin</SelectItem>
+                                        <SelectItem value="master">Master</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
-                        <Button type="submit" variant='default' className="w-full mt-4">
-                            Acessar
+                        <Button disabled={isSubmitting} type="submit" variant='default' className="w-full mt-4">
+                            {isSubmitting ? (
+                                <>
+                                  <Loader2 className="animate-spin" size={24} /> <span>Criando...</span>
+                                </>
+                            ) : (
+                                'Criar'
+                            )}
                         </Button>
                     </form>
                 </CardContent>

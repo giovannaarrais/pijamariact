@@ -4,5 +4,5 @@ export interface fastActionsProps {
     description?: string;
     icon: React.ReactNode;
     link: string;
-    color: string;
+    classPLus: string;
 }
