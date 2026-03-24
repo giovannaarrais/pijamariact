@@ -7,7 +7,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Grid2x2, House, MessageCircle, Shirt, Users } from "lucide-react"
+import { ArrowLeft, Grid2x2, House, MessageCircle, Shirt, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -66,17 +66,25 @@ export function AppSidebar() {
                 </Link>
             </SidebarHeader>
                 <SidebarContent>
-                    <SidebarMenu className="mt-4">
+                    <SidebarMenu className="mt-4 ">
                         {menuItems.map((item) => (
-                            <SidebarMenuItem key={item.id} className="border-b mb-2 p-2 py-1">
+                            <SidebarMenuItem key={item.id} className="border-t first:border-none p-2 py-2">
                                 <SidebarMenuButton>
-                                    <Link href={item.link} className="flex">
+                                    <Link href={item.link} className="flex w-full">
                                         <span className="me-2">{item.icon}</span>
                                         {item.name}
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         ))}
+                        <SidebarMenuItem className="mt-5">
+                            <Link
+                                href={'/'}
+                                className="flex gap-2 justify-center bg-primary p-2 text-sm font-semibold pe-3"
+                            >
+                                <ArrowLeft size={20}/>Voltar para o site
+                            </Link>
+                        </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarContent>
             <SidebarFooter />

@@ -1,9 +1,9 @@
 'use client'
 import Container from "@/app/components/Container";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Loader2, User } from "lucide-react";
+import { AlertCircle, Loader2, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -66,15 +66,24 @@ const CriarUsuarioPage = () => {
                 title="Criar Usuário"
                 icon={<User size={25}/>}
                 description="Adicione usuários de acordo com seu nivel de permissão"
+                buttonBack={true}
             />
 
             <Card>
-                {/* {isSubmitting && ( */}
-                    {/* <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10 rounded">
-                        <Loader2 className="animate-spin" size={24} />
-                    </div> */}
-                {/* )} */}
+                <CardHeader>
+                    <CardTitle className="font-bold text-lg">Formulário de criação de usuário</CardTitle>
+                    <CardDescription>Preencha os campos abaixo para criar um novo usuário</CardDescription>
+                </CardHeader>
                 <CardContent>
+                    
+                    {error && (
+                        <div className="text-center mb-4 flex justify-center shadow text-red-600 p-2">
+                            <AlertCircle />
+                            <p className="text-red-500 py-1 px-2 rounded text-center">
+                                {error}
+                            </p>
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="grid grid-cols-2 gap-4">
                            <div className="relative">
