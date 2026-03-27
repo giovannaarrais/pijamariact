@@ -20,12 +20,13 @@ import {
 } from "@/components/ui/select"
 import HeaderSection from "@/app/components/admin/headerSection";
 import ErrorInput from "@/app/components/admin/errorInput";
+import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
     name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
     email: z.string("E-mail inválido"),
     password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-    role: z.enum(["master", "admin", "registered"]),
+    role: z.string(),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -33,6 +34,7 @@ type FormValues = z.infer<typeof formSchema>
 const CriarUsuarioPage = () => {
     const router = useRouter()
     const [error, setError] = useState<string | undefined>(undefined)
+    const [success, setSuccess] = useState<string | undefined>(undefined)
 
     const {register, handleSubmit, formState: {errors, isSubmitting}, reset} = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -46,18 +48,27 @@ const CriarUsuarioPage = () => {
     
     
     async function onSubmit(values: FormValues) {
-        try{
-            const response = await CreateUserAction(values)
-            if(!response.success){
-                setError(response.error)
-                return
+        await authClient.signUp.email({
+            name: values.name,
+            email: values.email,
+            password: values.password,
+            role: values.role,
+            fetchOptions: {
+                onSuccess: () => {
+                    reset()
+                    setSuccess('Usuário criado com sucesso!')
+                    setTimeout(() => {
+                        setSuccess(undefined)
+                    }, 4000)
+                },
+                onError: (error) => {
+                    setError(error.error.message)
+                    setTimeout(() => {
+                        setError(undefined)
+                    }, 4000)
+                }
             }
-            
-            reset()
-            console.log('usuário criado com sucesso')
-        } catch(error){
-            console.log(error)
-        }
+        })
     }
 
     return ( 
@@ -75,6 +86,14 @@ const CriarUsuarioPage = () => {
                     <CardDescription>Preencha os campos abaixo para criar um novo usuário</CardDescription>
                 </CardHeader>
                 <CardContent>
+                     {success && (
+                        <div className="text-center mb-4 flex justify-center shadow text-green-600 p-2">
+                            <AlertCircle />
+                            <p className="text-green-500 py-1 px-2 rounded text-center">
+                                {success}
+                            </p>
+                        </div>
+                    )}
                     
                     {error && (
                         <div className="text-center mb-4 flex justify-center shadow text-red-600 p-2">

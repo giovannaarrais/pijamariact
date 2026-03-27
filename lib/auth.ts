@@ -1,7 +1,7 @@
 import { db } from "@/db";
-import { betterAuth } from "better-auth";
+import { betterAuth, InferClientAPI } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import * as schema from "@/db"
+import * as schema from "@/db/schema"
 
 export const auth = betterAuth({
     emailAndPassword: {
@@ -12,7 +12,15 @@ export const auth = betterAuth({
         schema
     }),
     user: {
-        modelName: "usersTable"
+        modelName: "usersTable",
+        additionalFields: {
+            role: {
+                type: "string",
+                default: "user",
+                required: true,
+                input: true
+            }
+        }
     },
     session: {
         modelName: "sessionTable"

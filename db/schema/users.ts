@@ -3,13 +3,14 @@ import { pgTable, text, timestamp, boolean, integer, uuid, varchar, pgEnum } fro
 export const roleEnum = pgEnum('role', ['master', 'admin', 'registered'])
 
 export const usersTable = pgTable("users" , {
-    id: uuid().primaryKey().defaultRandom(),
-    name: varchar().notNull(),
-    email: varchar().notNull().unique(),
-    password: varchar().notNull().unique(),
-    image: text('image'),
-    role: roleEnum().notNull().default('registered'),
-    createdAt: timestamp().defaultNow().notNull()
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull().unique(),
+    emailVerified: boolean("email_verified").notNull().default(false), 
+    image: text("image"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+    role: text("role").notNull().default("user"), 
 })
 
 
