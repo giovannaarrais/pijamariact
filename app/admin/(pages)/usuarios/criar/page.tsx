@@ -5,10 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { AlertCircle, Loader2, User } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateUserAction } from "@/app/actions/create-user";
+
+
 import { useState } from "react";
 import {
   Select,
@@ -36,13 +37,13 @@ const CriarUsuarioPage = () => {
     const [error, setError] = useState<string | undefined>(undefined)
     const [success, setSuccess] = useState<string | undefined>(undefined)
 
-    const {register, handleSubmit, formState: {errors, isSubmitting}, reset} = useForm<FormValues>({
+    const {register, handleSubmit, control, formState: {errors, isSubmitting}, reset} = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
             email: "",
             password: "",
-            role: "registered"
+            role: ""
         }
     })
     
@@ -60,6 +61,7 @@ const CriarUsuarioPage = () => {
                     setTimeout(() => {
                         setSuccess(undefined)
                     }, 4000)
+
                 },
                 onError: (error) => {
                     setError(error.error.message)
@@ -160,24 +162,33 @@ const CriarUsuarioPage = () => {
                                         message={errors.role?.message}
                                     />
                                 )}
-                                <Select
-                                    {...register("role")}
-                                    required 
-                                >
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Permissão" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                        <SelectItem value="registered">Registrado</SelectItem>
-                                        <SelectItem value="admin">Admin</SelectItem>
-                                        <SelectItem value="master">Master</SelectItem>
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
+
+                                <Controller
+                                    control={control}
+                                    name="role"
+                                    render={({ field }) => (
+                                    <Select
+                                        onValueChange={field.onChange} defaultValue={field.value}
+                                        {...register("role")}
+                                        required 
+                                    >
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Permissão"/>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                            <SelectItem value="registered">Registrado</SelectItem>
+                                            <SelectItem value="admin">Admin</SelectItem>
+                                            <SelectItem value="master">Master</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                    )}>
+                                </Controller>
+                                
                             </div>
                         </div>
-                        <Button disabled={isSubmitting} type="submit" variant='default' className="w-full mt-4">
+                        <Button disabled={isSubmitting} type="submit" variant='default' className="w-full mt-4 cursor-pointer">
                             {isSubmitting ? (
                                 <>
                                   <Loader2 className="animate-spin" size={24} /> <span>Criando...</span>

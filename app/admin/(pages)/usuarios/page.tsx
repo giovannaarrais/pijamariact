@@ -1,4 +1,5 @@
 import HeaderSection from "@/app/components/admin/headerSection";
+import { TableComponent } from "@/app/components/admin/table";
 import Container from "@/app/components/Container";
 import { fastActionsProps } from "@/app/types/fastActions";
 import { List, Plus, Users } from "lucide-react";
@@ -30,6 +31,17 @@ const UsuariosPage = () => {
                 icon={<Users size={25}/>}
                 fastActions={fastActions}
            />
+
+           <section id="usuarios">
+                <TableComponent
+                    title="Lista de Usuários Cadastrados"
+                    tableHeads={["n", "Nome", "Email", "Role", "Status"]}
+                    tableRows={[
+                    [1, "Pijama", "Pijamas", "Imagem", 30.33],
+                    [2, "Calcinha", "Lingeries", "Imagem", 40.44],
+                    ]}
+                />
+           </section>
         </Container>
     );
 }

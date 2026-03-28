@@ -1,6 +1,7 @@
 import { pgTable, text, timestamp, boolean, integer, uuid, varchar, pgEnum } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum('role', ['master', 'admin', 'registered'])
+export const statusEnum = pgEnum('status', ['active', 'inactive'])
 
 export const usersTable = pgTable("users" , {
     id: text("id").primaryKey(),
@@ -11,6 +12,7 @@ export const usersTable = pgTable("users" , {
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
     role: text("role").notNull().default("user"), 
+    status: text("status").notNull().default("active"), 
 })
 
 
