@@ -64,7 +64,7 @@ export default function LoginPage() {
 
 
     return (
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-50">
             <Card className="w-full max-w-sm rounded-br-none rounded-r-none">
                 <CardHeader>
                     <CardTitle>Acesso á area administrativa</CardTitle>

@@ -4,17 +4,28 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "../components/admin/app-sidebar";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Pijamariact Admin",
   description: "Área Administrativa da Pijamaria",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  })
+
+  if (!session?.user.id) {
+    redirect("/login")
+  }
+
   return (
     <html lang="pt-br">
       <body className="antialiased">

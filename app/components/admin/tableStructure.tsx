@@ -13,7 +13,7 @@ import {
 interface TableComponentProps {
     title: string,
     tableHeads: string[],
-    tableRows: (string | number)[][],
+    tableRows: (string | number | React.ReactNode)[][],
 }
 
 export function TableComponent({title, tableHeads, tableRows}: TableComponentProps) {
@@ -34,11 +34,11 @@ export function TableComponent({title, tableHeads, tableRows}: TableComponentPro
                     </TableHeader>
                     <TableBody>
                         {tableRows.map((items, index) => (
-                        <TableRow key={index}>
-                            {items.map((item, index) => (
-                                <TableCell key={index}>{item}</TableCell>
-                            ))}
-                        </TableRow>
+                            <TableRow key={index}>
+                                {items.map((item, index) => (
+                                    <TableCell key={index}>{item}</TableCell>
+                                ))}
+                            </TableRow>
                         ))}
                     </TableBody>
                     

@@ -1,10 +1,15 @@
+import { deleteUser } from "@/actions/users/delete";
 import HeaderSection from "@/app/components/admin/headerSection";
-import { TableComponent } from "@/app/components/admin/table";
+import { TableUsers } from "@/app/components/admin/tableUsers";
 import Container from "@/app/components/Container";
 import { fastActionsProps } from "@/app/types/fastActions";
-import { List, Plus, Users } from "lucide-react";
+import { getUsers } from "@/data/users/get";
+import {List, Plus, Users } from "lucide-react";
 
-const UsuariosPage = () => {
+
+const UsuariosPage = async () => {
+    const users = await getUsers()
+    
     const fastActions: fastActionsProps[] = [
         {
             id: 1,
@@ -23,6 +28,8 @@ const UsuariosPage = () => {
             classPLus: "bg-blue-900 text-white",
         },
     ];
+
+    
     return ( 
         <Container>
            <HeaderSection
@@ -33,14 +40,7 @@ const UsuariosPage = () => {
            />
 
            <section id="usuarios">
-                <TableComponent
-                    title="Lista de Usuários Cadastrados"
-                    tableHeads={["n", "Nome", "Email", "Role", "Status"]}
-                    tableRows={[
-                    [1, "Pijama", "Pijamas", "Imagem", 30.33],
-                    [2, "Calcinha", "Lingeries", "Imagem", 40.44],
-                    ]}
-                />
+                <TableUsers users={users} deleteUser={deleteUser}/>
            </section>
         </Container>
     );

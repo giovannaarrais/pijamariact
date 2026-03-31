@@ -13,6 +13,9 @@ export const usersTable = pgTable("users" , {
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
     role: text("role").notNull().default("user"), 
     status: text("status").notNull().default("active"), 
+    banned: boolean("banned").default(false),
+    banReason: text("ban_reason"),
+    banExpires: timestamp("ban_expires"),
 })
 
 

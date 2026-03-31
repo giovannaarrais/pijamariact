@@ -1,8 +1,14 @@
 'server-only'
 
 import { db } from "@/db";
+import { usersTable } from "@/db/schema";
 
 export async function getUsers(){
-    const users = await db.query.usersTable.findMany()
-    return users
+    try {
+        const users = await db.select().from(usersTable)
+        return users
+    } catch (error) {
+        console.error(error)
+        return null
+    }
 }

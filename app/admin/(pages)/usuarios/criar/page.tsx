@@ -22,12 +22,13 @@ import {
 import HeaderSection from "@/app/components/admin/headerSection";
 import ErrorInput from "@/app/components/admin/errorInput";
 import { authClient } from "@/lib/auth-client";
+import { CreateUserAction } from "@/actions/users/create";
 
 const formSchema = z.object({
     name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres"),
     email: z.string("E-mail inválido"),
     password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-    role: z.string(),
+    role: z.enum(["registered", "admin", "master"]),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -43,34 +44,26 @@ const CriarUsuarioPage = () => {
             name: "",
             email: "",
             password: "",
-            role: ""
+            role: "registered"
         }
     })
     
     
     async function onSubmit(values: FormValues) {
-        await authClient.signUp.email({
-            name: values.name,
-            email: values.email,
-            password: values.password,
-            role: values.role,
-            fetchOptions: {
-                onSuccess: () => {
-                    reset()
-                    setSuccess('Usuário criado com sucesso!')
-                    setTimeout(() => {
-                        setSuccess(undefined)
-                    }, 4000)
+        const result = await CreateUserAction(values)
 
-                },
-                onError: (error) => {
-                    setError(error.error.message)
-                    setTimeout(() => {
-                        setError(undefined)
-                    }, 4000)
-                }
-            }
-        })
+        if(result.success){
+            reset()
+            setSuccess('Usuário criado com sucesso!')
+            setTimeout(() => {
+                setSuccess(undefined)
+            }, 4000)
+        }else{
+            setError(result.error)
+            setTimeout(() => {
+                setError(undefined)
+            }, 4000)
+        }
     }
 
     return ( 

@@ -19,7 +19,7 @@ export default function HeaderSection({title, description, buttonBack, icon, fas
     const router = useRouter();
     return (
         <Card
-            className='border-b-3  p-3 gap-1 py-7 px-8'>
+            className='border-b-3  p-3 gap-1 py-7 px-6'>
             <div className="flex gap-2 mb-0">
                 {buttonBack && (
                     <Button onClick={() => router.back()} variant="default" size="icon" className="flex justify-center items-center px-1 rounded w-8 h-8 cursor-pointer">
