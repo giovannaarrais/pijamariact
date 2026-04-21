@@ -8,8 +8,6 @@ import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-
 import { useState } from "react";
 import {
   Select,
@@ -81,7 +79,7 @@ const CriarUsuarioPage = () => {
                     <CardDescription>Preencha os campos abaixo para criar um novo usuário</CardDescription>
                 </CardHeader>
                 <CardContent>
-                     {success && (
+                    {success && (
                         <div className="text-center mb-4 flex justify-center shadow text-green-600 p-2">
                             <AlertCircle />
                             <p className="text-green-500 py-1 px-2 rounded text-center">

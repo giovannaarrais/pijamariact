@@ -1,4 +1,5 @@
-import { deleteUser } from "@/actions/users/delete";
+import { deleteUserAction } from "@/actions/users/delete";
+import { updateUserAction } from "@/actions/users/update";
 import HeaderSection from "@/app/components/admin/headerSection";
 import { TableUsers } from "@/app/components/admin/tableUsers";
 import Container from "@/app/components/Container";
@@ -32,16 +33,16 @@ const UsuariosPage = async () => {
     
     return ( 
         <Container>
-           <HeaderSection
+            <HeaderSection
                 title="Usuários"
                 description="Gerencie os usuários que possuem acesso a PijamariaCT"
                 icon={<Users size={25}/>}
                 fastActions={fastActions}
-           />
+            />
 
-           <section id="usuarios">
-                <TableUsers users={users} deleteUser={deleteUser}/>
-           </section>
+            <section id="usuarios">
+                    <TableUsers users={users} deleteUser={deleteUserAction} updateUser={updateUserAction}/>
+            </section>
         </Container>
     );
 }

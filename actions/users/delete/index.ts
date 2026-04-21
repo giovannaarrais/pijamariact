@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
 import { headers } from "next/headers"
 
-export async function deleteUser(userId: string){
+export async function deleteUserAction(userId: string){
     try {
         await auth.api.removeUser({
             body: { userId },
