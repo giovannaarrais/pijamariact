@@ -7,7 +7,7 @@ export const categoriesTable = pgTable("categories" , {
     name: varchar().notNull(),
     description: varchar(),
     slug: varchar().notNull().unique(),
-    imageUrl: varchar('image_url').notNull(),
+    imageUrl: varchar('image_url'),
 })
 
 // uma categoria pode ter varios produtos

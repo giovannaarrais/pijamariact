@@ -10,7 +10,7 @@ export const productsTable = pgTable("products" , {
     description: varchar(),
     price: decimal().notNull(),
     categoryId: uuid('category_id').notNull().references(()=> categoriesTable.id),
-    imageUrl: varchar('image_url').notNull(),
+    imageUrl: varchar('image_url'),
     active: boolean().notNull().default(true)
 })
 

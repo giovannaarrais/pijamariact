@@ -1,9 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-
 
 @custom-variant dark (&:is(.dark *));
 
@@ -52,17 +51,17 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.980 0.006 174.415);
+  --background: oklch(0.98 0.006 174.415);
   --foreground: oklch(0.272 0.013 229.478);
-  --card: oklch(1.000 0.000 89.876);
+  --card: oklch(1 0 89.876);
   --card-foreground: oklch(0.272 0.013 229.478);
-  --popover: oklch(1.000 0.000 89.876);
+  --popover: oklch(1 0 89.876);
   --popover-foreground: oklch(0.272 0.013 229.478);
   --primary: oklch(0.845 0.076 182.829);
   --primary-foreground: oklch(0.272 0.013 229.478);
   --secondary: oklch(0.913 0.017 5.931);
   --secondary-foreground: oklch(0.272 0.013 229.478);
-  --muted: oklch(0.950 0.006 174.397);
+  --muted: oklch(0.95 0.006 174.397);
   --muted-foreground: oklch(0.558 0.022 229.324);
   --accent: oklch(0.816 0.054 7.133);
   --accent-foreground: oklch(0.272 0.013 229.478);
@@ -71,25 +70,25 @@
   --border: oklch(0.914 0.011 174.244);
   --input: oklch(0.914 0.011 174.244);
   --ring: oklch(0.845 0.076 182.829);
-  --sidebar: oklch(0.985 0.000 89.876);
-  --sidebar-foreground: oklch(0.370 0.012 285.801);
-  --sidebar-primary: oklch(0.210 0.006 285.884);
-  --sidebar-primary-foreground: oklch(0.985 0.000 89.876);
+  --sidebar: oklch(0.985 0 89.876);
+  --sidebar-foreground: oklch(0.37 0.012 285.801);
+  --sidebar-primary: oklch(0.21 0.006 285.884);
+  --sidebar-primary-foreground: oklch(0.985 0 89.876);
   --sidebar-accent: oklch(0.968 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.210 0.006 285.884);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.884);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.623 0.188 259.796);
 }
 
 .dark {
-  --background: oklch(0.217 0.009 229.380);
+  --background: oklch(0.217 0.009 229.38);
   --foreground: oklch(0.964 0.004 174.454);
-  --card: oklch(0.250 0.011 229.445);
+  --card: oklch(0.25 0.011 229.445);
   --card-foreground: oklch(0.964 0.004 174.454);
-  --popover: oklch(0.250 0.011 229.445);
+  --popover: oklch(0.25 0.011 229.445);
   --popover-foreground: oklch(0.964 0.004 174.454);
   --primary: oklch(0.845 0.076 182.829);
-  --primary-foreground: oklch(0.217 0.009 229.380);
+  --primary-foreground: oklch(0.217 0.009 229.38);
   --secondary: oklch(0.352 0.037 8.168);
   --secondary-foreground: oklch(0.964 0.004 174.454);
   --muted: oklch(0.303 0.015 229.518);
@@ -101,10 +100,10 @@
   --border: oklch(0.324 0.016 229.539);
   --input: oklch(0.324 0.016 229.539);
   --ring: oklch(0.845 0.076 182.829);
-  --sidebar: oklch(0.210 0.006 285.884);
+  --sidebar: oklch(0.21 0.006 285.884);
   --sidebar-foreground: oklch(0.968 0.001 286.375);
   --sidebar-primary: oklch(0.488 0.217 264.388);
-  --sidebar-primary-foreground: oklch(1.000 0.000 89.876);
+  --sidebar-primary-foreground: oklch(1 0 89.876);
   --sidebar-accent: oklch(0.274 0.005 286.033);
   --sidebar-accent-foreground: oklch(0.968 0.001 286.375);
   --sidebar-border: oklch(0.274 0.005 286.033);
@@ -120,10 +119,29 @@
 }
 
 * {
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   font-style: normal;
 }
 
-.font-secondary{
-  font-family: 'Playfair Display', serif !important;
+.font-secondary {
+  font-family: "Playfair Display", serif !important;
+}
+
+input::file-selector-button {
+  background-color: var(--primary);
+  padding: 4px 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 3px 10px 3px 3px;
+  height: 83%;
+}
+input[type="file"] {
+  padding: 0;
+}
+
+
+input, select, button[role="combobox"]{
+  min-height: 46px;
 }
