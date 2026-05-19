@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Instagram } from "lucide-react";
+import Image from "next/image";
 import productPijama1 from "@/public/assets/product-pijama-1.jpg";
 import productPijama2 from "@/public/assets/product-pijama-2.jpg";
 import productPijama3 from "@/public/assets/product-pijama-3.jpg";
@@ -54,9 +55,11 @@ const InstagramFeed = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.08, duration: 0.4 }}
             >
-              <img
+              <Image
                 src={post.image}
                 alt="Post Instagram"
+                fill
+                sizes="(min-width: 640px) 33vw, 50vw"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors duration-300 flex items-center justify-center">

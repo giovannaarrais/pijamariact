@@ -35,7 +35,7 @@ const menuItems: menuItemsProps[] = [
         id: 3,
         name: 'Categorias',
         icon: <Grid2x2 size={20} />,
-        link: '#'
+        link: '/admin/categorias'
     },
     {
         id: 4,

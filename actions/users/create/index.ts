@@ -22,11 +22,11 @@ export async function CreateUserAction(data: CreateUserSchema) {
             data: result
         }
     
-    } catch(error: any){
+    } catch(error: unknown){
         console.error(error)
         return {
             success: false,
-            error: error.message
+            error: error instanceof Error ? error.message : "Erro ao criar usuario"
         }
     }
 }

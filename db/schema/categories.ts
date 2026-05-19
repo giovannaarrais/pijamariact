@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { productsTable } from "./products";
 
 export const categoriesTable = pgTable("categories" , {
@@ -8,6 +8,9 @@ export const categoriesTable = pgTable("categories" , {
     description: varchar(),
     slug: varchar().notNull().unique(),
     imageUrl: varchar('image_url'),
+    active: boolean().notNull().default(true),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
 // uma categoria pode ter varios produtos

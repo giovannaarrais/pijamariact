@@ -1,4 +1,4 @@
-import { boolean, decimal, integer, pgEnum, pgTable, primaryKey, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, decimal, pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { categoriesTable } from "./categories";
 import { relations } from "drizzle-orm";
 
@@ -11,7 +11,9 @@ export const productsTable = pgTable("products" , {
     price: decimal().notNull(),
     categoryId: uuid('category_id').notNull().references(()=> categoriesTable.id),
     imageUrl: varchar('image_url'),
-    active: boolean().notNull().default(true)
+    active: boolean().notNull().default(true),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
 export const productSizesTable = pgTable("products_sizes" , {
