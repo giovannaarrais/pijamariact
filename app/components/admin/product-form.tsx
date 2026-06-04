@@ -10,12 +10,12 @@ import { createProductAction, updateProductAction } from "@/actions/products";
 import { productFormSchema, type ProductFormInput, type ProductFormSchema } from "@/actions/products/schema";
 import ErrorInput from "@/app/components/admin/errorInput";
 import { FeedbackMessage } from "@/app/components/admin/feedback-message";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/app/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Input } from "@/app/components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 
-import type { Category, ProductSize, ProductWithCategory } from "@/types/catalog";
+import type { Category, ProductSize, ProductWithCategory } from "@/app/types/catalog";
 
 interface ProductFormProps {
     categories: Category[];

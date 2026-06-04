@@ -7,7 +7,7 @@ import { categoryFormSchema, categoryUpdateSchema, type CategoryFormSchema, type
 import { auth } from "@/lib/auth";
 import { createCategory, deleteCategory, updateCategory } from "@/services/categories";
 
-import type { ActionResult, Category } from "@/types/catalog";
+import type { ActionResult, Category } from "@/app/types/catalog";
 
 async function assertAdmin() {
     const session = await auth.api.getSession({

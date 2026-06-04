@@ -5,7 +5,7 @@ import { desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { productSizesTable, productsTable } from "@/db/schema";
 
-import type { NewProduct, ProductSize, ProductWithCategory } from "@/types/catalog";
+import type { NewProduct, ProductSize, ProductWithCategory } from "@/app/types/catalog";
 
 interface ProductPayload extends Omit<NewProduct, "id" | "price"> {
     price: number;

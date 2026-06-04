@@ -1,8 +1,8 @@
 'use client'
 
 import { fastActionsProps } from "@/app/types/fastActions";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Button } from "@/app/components/ui/button";
+import { Card } from "@/app/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

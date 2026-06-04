@@ -6,7 +6,7 @@ import { db } from "@/db";
 import { categoriesTable } from "@/db/schema";
 import { slugify } from "@/lib/slug";
 
-import type { Category, NewCategory } from "@/types/catalog";
+import type { Category, NewCategory } from "@/app/types/catalog";
 
 async function createUniqueSlug(name: string, slug?: string, ignoreId?: string) {
     const baseSlug = slugify(slug?.trim() || name);

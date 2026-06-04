@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/app/components/ui/card"
 import {
     Table,
     TableBody,
@@ -8,7 +8,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/app/components/ui/table"
 
 interface TableComponentProps {
     title: string,

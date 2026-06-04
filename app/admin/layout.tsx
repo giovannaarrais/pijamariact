@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/app/components/ui/sidebar";
 import { AppSidebar } from "../components/admin/app-sidebar";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+import { getCachedSession } from "@/services/getCachedSession";
 
 export const metadata: Metadata = {
   title: "Pijamariact Admin",
@@ -18,9 +17,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
+  const session = await getCachedSession();
 
   if (!session?.user.id) {
     redirect("/login")

@@ -6,7 +6,6 @@ import Container from "@/app/components/Container";
 import type { fastActionsProps } from "@/app/types/fastActions";
 import { listProducts } from "@/data/products/get";
 
-export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
     const products = await listProducts();

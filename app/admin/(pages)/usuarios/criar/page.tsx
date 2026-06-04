@@ -1,8 +1,8 @@
 'use client'
 import Container from "@/app/components/Container";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/app/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Input } from "@/app/components/ui/input";
 import { AlertCircle, Loader2, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/app/components/ui/select"
 import HeaderSection from "@/app/components/admin/headerSection";
 import ErrorInput from "@/app/components/admin/errorInput";
 import { authClient } from "@/lib/auth-client";

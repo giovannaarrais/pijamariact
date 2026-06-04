@@ -6,8 +6,8 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { ArrowLeft, Grid2x2, House, MessageCircle, Shirt, Users } from "lucide-react"
+} from "@/app/components/ui/sidebar"
+import { ArrowLeft, Grid2x2, House, ImageUp, MessageCircle, Shirt, Users } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
@@ -39,12 +39,18 @@ const menuItems: menuItemsProps[] = [
     },
     {
         id: 4,
-        name: 'Feedbacks',
-        icon: <MessageCircle size={20} />,
-        link: '#'
+        name: 'Galeria',
+        icon: <ImageUp size={20} />,
+        link: '/admin/galeria'
     },
     {
         id: 5,
+        name: 'Feedbacks',
+        icon: <MessageCircle size={20} />,
+        link: '/admin/feedbacks'
+    },
+    {
+        id: 6,
         name: 'Usuários',
         icon: <Users size={20} />,
         link: '/admin/usuarios'

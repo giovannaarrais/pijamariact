@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Tags } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { ImageUp, Loader2 } from "lucide-react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
-import { createCategoryAction, updateCategoryAction } from "@/actions/categories";
-import { categoryFormSchema, type CategoryFormSchema } from "@/actions/categories/schema";
+import { createGalleryImageAction, updateGalleryImageAction } from "@/actions/gallery";
+import { galleryImageFormSchema, type GalleryImageFormInput, type GalleryImageFormSchema } from "@/actions/gallery/schema";
 import ErrorInput from "@/app/components/admin/errorInput";
 import { FeedbackMessage } from "@/app/components/admin/feedback-message";
 import { Button } from "@/app/components/ui/button";
@@ -15,17 +16,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app
 import { Input } from "@/app/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 
-import type { Category } from "@/app/types/catalog";
+import type { GalleryImage } from "@/app/types/catalog";
 
-interface CategoryFormProps {
-    category?: Category;
+interface GalleryFormProps {
+    image?: GalleryImage;
 }
 
-export function CategoryForm({ category }: CategoryFormProps) {
+export function GalleryForm({ image }: GalleryFormProps) {
     const router = useRouter();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<string>();
-    const isEditing = Boolean(category);
+    const isEditing = Boolean(image);
 
     const {
         register,
@@ -33,34 +34,36 @@ export function CategoryForm({ category }: CategoryFormProps) {
         control,
         formState: { errors, isSubmitting },
         reset,
-    } = useForm<CategoryFormSchema>({
-        resolver: zodResolver(categoryFormSchema),
+    } = useForm<GalleryImageFormInput, unknown, GalleryImageFormSchema>({
+        resolver: zodResolver(galleryImageFormSchema),
         defaultValues: {
-            name: category?.name ?? "",
-            slug: category?.slug ?? "",
-            description: category?.description ?? "",
-            imageUrl: category?.imageUrl ?? "",
-            active: category?.active ?? true,
+            title: image?.title ?? "",
+            imageUrl: image?.imageUrl ?? "",
+            alt: image?.alt ?? "",
+            sortOrder: image?.sortOrder ?? 0,
+            active: image?.active ?? true,
         },
     });
 
-    async function onSubmit(values: CategoryFormSchema) {
+    const previewUrl = useWatch({ control, name: "imageUrl" });
+
+    async function onSubmit(values: GalleryImageFormSchema) {
         setError(undefined);
         setSuccess(undefined);
 
-        const result = category
-            ? await updateCategoryAction({ ...values, id: category.id })
-            : await createCategoryAction(values);
+        const result = image
+            ? await updateGalleryImageAction({ ...values, id: image.id })
+            : await createGalleryImageAction(values);
 
         if (result.success) {
             setSuccess(result.message);
 
             if (!isEditing) {
                 reset({
-                    name: "",
-                    slug: "",
-                    description: "",
+                    title: "",
                     imageUrl: "",
+                    alt: "",
+                    sortOrder: 0,
                     active: true,
                 });
             }
@@ -76,11 +79,11 @@ export function CategoryForm({ category }: CategoryFormProps) {
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg font-bold">
-                    <Tags size={20} />
-                    {isEditing ? "Editar categoria" : "Formulario de categoria"}
+                    <ImageUp size={20} />
+                    {isEditing ? "Editar imagem" : "Formulario de imagem"}
                 </CardTitle>
                 <CardDescription>
-                    {isEditing ? "Atualize os dados da categoria selecionada" : "Preencha os campos para criar uma nova categoria"}
+                    {isEditing ? "Atualize a imagem selecionada da galeria" : "Cadastre uma imagem para exibir na galeria"}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -90,13 +93,13 @@ export function CategoryForm({ category }: CategoryFormProps) {
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div className="grid gap-4 md:grid-cols-2">
                         <div className="relative">
-                            {errors.name && <ErrorInput message={errors.name.message} />}
-                            <Input id="name" placeholder="Nome" {...register("name")} />
+                            {errors.title && <ErrorInput message={errors.title.message} />}
+                            <Input id="title" placeholder="Titulo" {...register("title")} />
                         </div>
 
                         <div className="relative">
-                            {errors.slug && <ErrorInput message={errors.slug.message} />}
-                            <Input id="slug" placeholder="Slug automatico se vazio" {...register("slug")} />
+                            {errors.sortOrder && <ErrorInput message={errors.sortOrder.message} />}
+                            <Input id="sortOrder" type="number" min="0" placeholder="Ordem" {...register("sortOrder", { valueAsNumber: true })} />
                         </div>
 
                         <div className="relative md:col-span-2">
@@ -104,14 +107,9 @@ export function CategoryForm({ category }: CategoryFormProps) {
                             <Input id="imageUrl" placeholder="URL da imagem" {...register("imageUrl")} />
                         </div>
 
-                        <div className="relative md:col-span-2">
-                            {errors.description && <ErrorInput message={errors.description.message} />}
-                            <textarea
-                                id="description"
-                                className="min-h-28 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                                placeholder="Descricao"
-                                {...register("description")}
-                            />
+                        <div className="relative">
+                            {errors.alt && <ErrorInput message={errors.alt.message} />}
+                            <Input id="alt" placeholder="Texto alternativo" {...register("alt")} />
                         </div>
 
                         <div className="relative">
@@ -120,10 +118,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
                                 control={control}
                                 name="active"
                                 render={({ field }) => (
-                                    <Select
-                                        value={field.value ? "active" : "inactive"}
-                                        onValueChange={(value) => field.onChange(value === "active")}
-                                    >
+                                    <Select value={field.value ? "active" : "inactive"} onValueChange={(value) => field.onChange(value === "active")}>
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Status" />
                                         </SelectTrigger>
@@ -138,6 +133,12 @@ export function CategoryForm({ category }: CategoryFormProps) {
                             />
                         </div>
                     </div>
+
+                    {previewUrl && !errors.imageUrl && (
+                        <div className="relative h-56 overflow-hidden rounded-md border bg-muted">
+                            <Image src={previewUrl} alt="Previa da imagem" fill className="object-cover" />
+                        </div>
+                    )}
 
                     <Button disabled={isSubmitting} type="submit" className="w-full cursor-pointer">
                         {isSubmitting ? (

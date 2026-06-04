@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/app/components/ui/button";
 import { TableComponent } from "./tableStructure";
 import { Edit2, Trash2, Users } from "lucide-react";
 import { AlertEmptyData } from "./alertEmptyData";
@@ -14,8 +14,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Input } from "@/components/ui/input";
+} from "@/app/components/ui/alert-dialog"
+import { Input } from "@/app/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -23,7 +23,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/app/components/ui/select"
 import { UpdateUserSchema } from "@/actions/users/update/schema";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";

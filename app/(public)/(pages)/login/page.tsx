@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/app/components/ui/button"
 import {
     Card,
     CardAction,
@@ -9,8 +9,8 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+} from "@/app/components/ui/card"
+import { Input } from "@/app/components/ui/input"
 import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Image from "next/image"

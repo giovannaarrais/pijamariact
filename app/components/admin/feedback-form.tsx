@@ -3,11 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Tags } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createCategoryAction, updateCategoryAction } from "@/actions/categories";
-import { categoryFormSchema, type CategoryFormSchema } from "@/actions/categories/schema";
+import { createFeedbackAction, updateFeedbackAction } from "@/actions/feedbacks";
+import { feedbackFormSchema, type FeedbackFormInput, type FeedbackFormSchema } from "@/actions/feedbacks/schema";
 import ErrorInput from "@/app/components/admin/errorInput";
 import { FeedbackMessage } from "@/app/components/admin/feedback-message";
 import { Button } from "@/app/components/ui/button";
@@ -15,17 +15,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app
 import { Input } from "@/app/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 
-import type { Category } from "@/app/types/catalog";
+import type { Feedback } from "@/app/types/catalog";
 
-interface CategoryFormProps {
-    category?: Category;
+interface FeedbackFormProps {
+    feedback?: Feedback;
 }
 
-export function CategoryForm({ category }: CategoryFormProps) {
+export function FeedbackForm({ feedback }: FeedbackFormProps) {
     const router = useRouter();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<string>();
-    const isEditing = Boolean(category);
+    const isEditing = Boolean(feedback);
 
     const {
         register,
@@ -33,24 +33,23 @@ export function CategoryForm({ category }: CategoryFormProps) {
         control,
         formState: { errors, isSubmitting },
         reset,
-    } = useForm<CategoryFormSchema>({
-        resolver: zodResolver(categoryFormSchema),
+    } = useForm<FeedbackFormInput, unknown, FeedbackFormSchema>({
+        resolver: zodResolver(feedbackFormSchema),
         defaultValues: {
-            name: category?.name ?? "",
-            slug: category?.slug ?? "",
-            description: category?.description ?? "",
-            imageUrl: category?.imageUrl ?? "",
-            active: category?.active ?? true,
+            name: feedback?.name ?? "",
+            message: feedback?.message ?? "",
+            rating: feedback?.rating ?? 5,
+            active: feedback?.active ?? true,
         },
     });
 
-    async function onSubmit(values: CategoryFormSchema) {
+    async function onSubmit(values: FeedbackFormSchema) {
         setError(undefined);
         setSuccess(undefined);
 
-        const result = category
-            ? await updateCategoryAction({ ...values, id: category.id })
-            : await createCategoryAction(values);
+        const result = feedback
+            ? await updateFeedbackAction({ ...values, id: feedback.id })
+            : await createFeedbackAction(values);
 
         if (result.success) {
             setSuccess(result.message);
@@ -58,9 +57,8 @@ export function CategoryForm({ category }: CategoryFormProps) {
             if (!isEditing) {
                 reset({
                     name: "",
-                    slug: "",
-                    description: "",
-                    imageUrl: "",
+                    message: "",
+                    rating: 5,
                     active: true,
                 });
             }
@@ -76,11 +74,11 @@ export function CategoryForm({ category }: CategoryFormProps) {
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg font-bold">
-                    <Tags size={20} />
-                    {isEditing ? "Editar categoria" : "Formulario de categoria"}
+                    <MessageCircle size={20} />
+                    {isEditing ? "Editar feedback" : "Formulario de feedback"}
                 </CardTitle>
                 <CardDescription>
-                    {isEditing ? "Atualize os dados da categoria selecionada" : "Preencha os campos para criar uma nova categoria"}
+                    {isEditing ? "Atualize o depoimento selecionado" : "Cadastre depoimentos e avaliações dos clientes"}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -91,27 +89,12 @@ export function CategoryForm({ category }: CategoryFormProps) {
                     <div className="grid gap-4 md:grid-cols-2">
                         <div className="relative">
                             {errors.name && <ErrorInput message={errors.name.message} />}
-                            <Input id="name" placeholder="Nome" {...register("name")} />
+                            <Input id="name" placeholder="Nome do cliente" {...register("name")} />
                         </div>
 
                         <div className="relative">
-                            {errors.slug && <ErrorInput message={errors.slug.message} />}
-                            <Input id="slug" placeholder="Slug automatico se vazio" {...register("slug")} />
-                        </div>
-
-                        <div className="relative md:col-span-2">
-                            {errors.imageUrl && <ErrorInput message={errors.imageUrl.message} />}
-                            <Input id="imageUrl" placeholder="URL da imagem" {...register("imageUrl")} />
-                        </div>
-
-                        <div className="relative md:col-span-2">
-                            {errors.description && <ErrorInput message={errors.description.message} />}
-                            <textarea
-                                id="description"
-                                className="min-h-28 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                                placeholder="Descricao"
-                                {...register("description")}
-                            />
+                            {errors.rating && <ErrorInput message={errors.rating.message} />}
+                            <Input id="rating" type="number" min="1" max="5" placeholder="Avaliacao" {...register("rating", { valueAsNumber: true })} />
                         </div>
 
                         <div className="relative">
@@ -120,21 +103,28 @@ export function CategoryForm({ category }: CategoryFormProps) {
                                 control={control}
                                 name="active"
                                 render={({ field }) => (
-                                    <Select
-                                        value={field.value ? "active" : "inactive"}
-                                        onValueChange={(value) => field.onChange(value === "active")}
-                                    >
+                                    <Select value={field.value ? "active" : "inactive"} onValueChange={(value) => field.onChange(value === "active")}>
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Status" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectItem value="active">Ativa</SelectItem>
-                                                <SelectItem value="inactive">Inativa</SelectItem>
+                                                <SelectItem value="active">Publicado</SelectItem>
+                                                <SelectItem value="inactive">Oculto</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
                                 )}
+                            />
+                        </div>
+
+                        <div className="relative md:col-span-2">
+                            {errors.message && <ErrorInput message={errors.message.message} />}
+                            <textarea
+                                id="message"
+                                className="min-h-32 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                                placeholder="Mensagem"
+                                {...register("message")}
                             />
                         </div>
                     </div>

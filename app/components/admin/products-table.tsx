@@ -19,13 +19,13 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+} from "@/app/components/ui/alert-dialog";
+import { Button } from "@/app/components/ui/button";
 
-import type { ProductWithCategory } from "@/types/catalog";
+import type { ProductWithCategory } from "@/app/types/catalog";
 
 interface ProductsTableProps {
-    products: ProductWithCategory[] | null;
+    products: ProductWithCategory[] | null | undefined;
 }
 
 function formatPrice(price: string) {

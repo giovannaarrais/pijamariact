@@ -7,7 +7,7 @@ import { productFormSchema, productUpdateSchema, type ProductFormSchema, type Pr
 import { auth } from "@/lib/auth";
 import { createProduct, deleteProduct, updateProduct } from "@/services/products";
 
-import type { ActionResult, Product } from "@/types/catalog";
+import type { ActionResult, Product } from "@/app/types/catalog";
 
 async function assertAdmin() {
     const session = await auth.api.getSession({
