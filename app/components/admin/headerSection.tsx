@@ -37,7 +37,7 @@ export default function HeaderSection({title, description, buttonBack, icon, fas
                 key={item.id}
                 className={`shadow-none ${item.classPLus} px-4 py-5 gap-1`}
                 >
-                    <Link href={item.link}>
+                    <Link href={item.link || "#"} onClick={item.function || undefined}>
                         <div className="flex gap-2 mb-0">
                             <span>{item.icon}</span>
                             <h4 className={`font-bold text-md`}>{item.title}</h4>

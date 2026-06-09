@@ -13,8 +13,10 @@ import {
 import { Input } from "@/app/components/ui/input"
 import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { Loader2 } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import z from "zod"
 
@@ -28,12 +30,13 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function LoginPage() {
     const router = useRouter()
+    const [loading, setLoading] = useState(false)
     const {register, handleSubmit, setError, formState: { errors } } = useForm<FormValues>({
         resolver: zodResolver(formSchema)
     })
     
     async function onSubmit(values: FormValues) {
-        console.log(values)
+        setLoading(true)
         await authClient.signIn.email({
             email: values.email,
             password: values.password,
@@ -60,6 +63,7 @@ export default function LoginPage() {
                 }
             }
         })
+        setLoading(false)
     }
 
 
@@ -119,6 +123,7 @@ export default function LoginPage() {
                         </div>
                         <Button type="submit" variant='default' className="w-full mt-4">
                             Acessar
+                            {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
                         </Button>
                     </form>
                 </CardContent>

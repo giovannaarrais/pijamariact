@@ -1,47 +1,22 @@
-import { ImageUp, List, Plus } from "lucide-react";
+import { ImageUp, Plus } from "lucide-react";
 
-import HeaderSection from "@/app/components/admin/headerSection";
-import { GalleryTable } from "@/app/components/admin/gallery-table";
+import { Button } from "@/app/components/ui/button";
 import Container from "@/app/components/Container";
-import type { fastActionsProps } from "@/app/types/fastActions";
-import { listGalleryImages } from "@/data/gallery/get";
+import HeaderSection from "@/app/components/admin/headerSection";
+import GalleryContent from "@/app/components/admin/galleryContent";
 
 const GaleriaPage = async () => {
-    const images = await listGalleryImages();
-
-    const fastActions: fastActionsProps[] = [
-        {
-            id: 1,
-            title: "Nova imagem",
-            description: "Adicione imagens na galeria",
-            icon: <Plus />,
-            link: "galeria/criar",
-            classPLus: "bg-purple-800 text-white",
-        },
-        {
-            id: 2,
-            title: "Lista de imagens",
-            description: "Veja todas as imagens cadastradas",
-            icon: <List />,
-            link: "#galeria",
-            classPLus: "bg-blue-900 text-white",
-        },
-    ];
-
     return (
         <Container>
             <HeaderSection
-                title="Galeria de Imagens"
-                description="Gerencie as imagens"
-                icon={<ImageUp size={25} />}
-                fastActions={fastActions}
+                title="Galeria de Fotos"
+                description="Gerencie as imagens da galeria"
+                icon={<ImageUp size={24} />}
             />
-
-            <section id="galeria">
-                <GalleryTable images={images} />
-            </section>
+            <GalleryContent />
         </Container>
-    );
+    )
+
 }
 
 export default GaleriaPage;
