@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Shirt } from "lucide-react";
+import { Images, Loader2, Shirt } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { createProductAction, updateProductAction } from "@/actions/products";
@@ -16,6 +16,8 @@ import { Input } from "@/app/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 
 import type { Category, ProductSize, ProductWithCategory } from "@/app/types/catalog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+import GalleryContent from "./galleryContent";
 
 interface ProductFormProps {
     categories: Category[];
@@ -29,6 +31,8 @@ export function ProductForm({ categories, product }: ProductFormProps) {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<string>();
     const isEditing = Boolean(product);
+    const [modalImages, setModalImages] = useState(false)
+    const [selectedImages, setSelectedImages] = useState<string[]>([]);
 
     const {
         register,
@@ -89,6 +93,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
         setError(result.message);
     }
+    // function imagesSelecteds(images){
+
+    // }
 
     return (
         <Card>
@@ -167,8 +174,33 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
                         <div className="relative md:col-span-2">
                             {errors.imageUrl && <ErrorInput message={errors.imageUrl.message} />}
-                            <Input id="imageUrl" placeholder="URL da imagem" {...register("imageUrl")} />
+                            {/* <Input id="imageUrl" placeholder="URL da imagem" {...register("imageUrl")} /> */}
+                            <Button type="button" onClick={() => setModalImages(true)}>
+                                <Images />
+                                Selecionar Imagem
+                            </Button>
                         </div>
+
+                        {modalImages && (
+                            <AlertDialog open={modalImages} onOpenChange={setModalImages}>
+                                <AlertDialogContent className="!w-[90vw] !max-w-[90vw] max-h-[90vh]  overflow-y-auto">
+
+                                <AlertDialogTrigger>
+                                    <AlertDialogTitle>Selecionar Imagem</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Selecione uma imagem para o produto
+                                    </AlertDialogDescription>
+                                </AlertDialogTrigger>
+                                    
+                                    <GalleryContent />
+                                  
+                                    <AlertDialogFooter className="sticky bottom-0 z-10 bg-white rounded-3xl p-3 shadow">
+                                        <AlertDialogCancel onClick={() => setModalImages(false)}>Cancelar</AlertDialogCancel>
+                                        <AlertDialogAction>Confirmar</AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        )}
 
                         <div className="relative md:col-span-2">
                             {errors.description && <ErrorInput message={errors.description.message} />}
