@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Images, Loader2, Shirt } from "lucide-react";
+import { Check, Images, Loader2, Shirt } from "lucide-react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { createProductAction, updateProductAction } from "@/actions/products";
@@ -18,6 +18,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import type { Category, ProductSize, ProductWithCategory } from "@/app/types/catalog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import GalleryContent from "./galleryContent";
+import { ImageProps } from "@/app/types/images";
+import Image from "next/image";
 
 interface ProductFormProps {
     categories: Category[];
@@ -32,7 +34,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
     const [error, setError] = useState<string>();
     const isEditing = Boolean(product);
     const [modalImages, setModalImages] = useState(false)
-    const [selectedImages, setSelectedImages] = useState<string[]>([]);
+    const [selectedImages, setSelectedImages] = useState<ImageProps[]>([]);
 
     const {
         register,
@@ -93,9 +95,18 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
         setError(result.message);
     }
-    // function imagesSelecteds(images){
+    function imagesSelecteds(images: ImageProps[]){
+        if(images && images.length > 0){
+            setModalImages(false)
+            setSelectedImages(images)
+            setValue("imageUrl", images.map((image) => image.url).join(", "))
+        } else{
+            setModalImages(false)
+            setSelectedImages([])
+            setValue("imageUrl", "")
+        }
 
-    // }
+    }
 
     return (
         <Card>
@@ -174,11 +185,23 @@ export function ProductForm({ categories, product }: ProductFormProps) {
 
                         <div className="relative md:col-span-2">
                             {errors.imageUrl && <ErrorInput message={errors.imageUrl.message} />}
-                            {/* <Input id="imageUrl" placeholder="URL da imagem" {...register("imageUrl")} /> */}
-                            <Button type="button" onClick={() => setModalImages(true)}>
-                                <Images />
-                                Selecionar Imagem
-                            </Button>
+                            <div className="flex gap-2 mb-3">
+                                <Button type="button" onClick={() => setModalImages(true)}>
+                                    <Images />
+                                    Selecionar Imagem
+                                </Button>
+                                <div className="flex items-center gap-2">
+                                    <Check size={14} />
+                                    <span className="text-xs">{selectedImages.length} imagem(ns) selecionada(s)</span>
+                                </div>
+                            </div>
+                            {selectedImages.length > 0 && (
+                                <div className="flex gap-2">
+                                    {selectedImages.map((image) => (
+                                        <Image key={image.id} src={image.url} alt={image.name} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl"/>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
                         {modalImages && (
@@ -192,7 +215,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                                     </AlertDialogDescription>
                                 </AlertDialogTrigger>
                                     
-                                    <GalleryContent />
+                                    <GalleryContent imagesSelecteds={imagesSelecteds}/>
                                   
                                     <AlertDialogFooter className="sticky bottom-0 z-10 bg-white rounded-3xl p-3 shadow">
                                         <AlertDialogCancel onClick={() => setModalImages(false)}>Cancelar</AlertDialogCancel>

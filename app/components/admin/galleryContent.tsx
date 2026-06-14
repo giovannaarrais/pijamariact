@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 import { refresh } from 'next/cache';
 import Image from 'next/image';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../ui/alert-dialog';
-import { Trash2, Check, Copy } from 'lucide-react';
+import { Trash2, Check, Copy, Send } from 'lucide-react';
 import { formatDate } from '@/utils/formatDate';
 
 interface ImageProps {
@@ -21,7 +21,7 @@ interface ImageProps {
 }
 
 interface GalleryContentProps {
-    imagesSelecteds: (images: ImageProps[]) => void
+    imagesSelecteds?: (images: ImageProps[]) => void | undefined
 }
 
 function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
@@ -74,11 +74,11 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
         }
     };
 
-    const handleCopyUrls = () => {
-        const urls = selectedImages.map((img) => img.url).join('\n');
-        navigator.clipboard.writeText(urls);
-        setSuccessMessage(`${selectedImages.length} URL(s) copiada(s) para a área de transferência!`);
-        setTimeout(() => setSuccessMessage(null), 3000);
+    const handleSelectedImages = () => {
+        if(selectedImages.length === 0) return;
+        if(typeof imagesSelecteds === 'function'){
+            imagesSelecteds(selectedImages)
+        }
     };
 
     const handleDeleteSelected = async () => {
@@ -246,11 +246,11 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
                                     variant="outline"
                                     size="sm"
                                     className="cursor-pointer gap-1.5 text-xs h-8"
-                                    onClick={handleCopyUrls}
+                                    onClick={handleSelectedImages}
                                     id="btn-bulk-copy"
                                 >
-                                    <Copy size={14} />
-                                    Copiar URLs
+                                    <Send size={14} />
+                                    Enviar imagens
                                 </Button>
                                 
                                 
