@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Edit2, Shirt, Trash2 } from "lucide-react";
+import { Edit2, Plus, Shirt, Trash2 } from "lucide-react";
 
 import { deleteProductAction } from "@/actions/products";
 import { AlertEmptyData } from "@/app/components/admin/alertEmptyData";
@@ -23,6 +23,7 @@ import {
 import { Button } from "@/app/components/ui/button";
 
 import type { ProductWithCategory } from "@/app/types/catalog";
+import { imagesSeparated } from "@/utils/imagesSeparated";
 
 interface ProductsTableProps {
     products: ProductWithCategory[] | null | undefined;
@@ -61,27 +62,38 @@ export function ProductsTable({ products }: ProductsTableProps) {
         );
     }
 
+
+
+
     return (
         <div className="space-y-4">
             {message && <FeedbackMessage type={message.type} message={message.text} />}
 
             <TableComponent
                 title="Lista de Produtos Cadastrados"
-                tableHeads={["Nº", "Produto", "Categoria", "Tamanhos", "Imagem", "Valor", "Status", "Ações"]}
+                tableHeads={["Nº", "Produto", "Categoria", "Tamanhos", "Imagens", "Valor", "Status", "Ações"]}
                 tableRows={products.map((product, index) => [
                     index + 1,
                     product.name,
                     product.category.name,
                     product.sizes.join(", ") || "-",
                     product.imageUrl ? (
-                        <Image
-                            key={`${product.id}-image`}
-                            src={product.imageUrl}
-                            alt={product.name}
-                            width={48}
-                            height={48}
-                            className="h-12 w-12 rounded-md object-cover"
-                        />
+                        <div className=" flex ">
+                            
+                            <Image
+                                key={`${product.id}-image`}
+                                src={imagesSeparated(product.imageUrl)[0]}
+                                alt={product.name}
+                                width={48}
+                                height={48}
+                                className="h-12 w-12 rounded-md object-cover"
+                            />
+                            {imagesSeparated(product.imageUrl).length > 1 && (
+                                <span className=" ms-2  flex items-center justify-center text-xs font-medium ">
+                                    +{imagesSeparated(product.imageUrl).length - 1}
+                                </span>
+                            )}
+                        </div>  
                     ) : (
                         "-"
                     ),

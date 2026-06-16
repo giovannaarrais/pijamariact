@@ -20,6 +20,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import GalleryContent from "./galleryContent";
 import { ImageProps } from "@/app/types/images";
 import Image from "next/image";
+import { imagesSeparated } from "@/utils/imagesSeparated";
 
 interface ProductFormProps {
     categories: Category[];
@@ -199,6 +200,14 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                                 <div className="flex gap-2">
                                     {selectedImages.map((image) => (
                                         <Image key={image.id} src={image.url} alt={image.name} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl"/>
+                                    ))}
+                                </div>
+                            )}
+
+                            {selectedImages.length <= 0 && product?.imageUrl && (
+                                <div className="flex gap-2">
+                                    {imagesSeparated(product.imageUrl).map((image, index) => (
+                                        <Image key={index} src={image} alt={image} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl"/>
                                     ))}
                                 </div>
                             )}
