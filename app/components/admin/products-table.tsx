@@ -48,6 +48,9 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
     const [searchValue, setSearchValue] = useState<string>("")
     const [statusFilter, setStatusFilter] = useState<string>("todos")
     const [categoryFilter, setCategoryFilter] = useState<string>("todos")
+    const [searchAdvancedIsOpen, setSearchAdvancedIsOpen] = useState<boolean>(false);
+    const [priceFilter, setPriceFilter] = useState<string>("todos");
+    const [sizesFilter, setSizesFilter] = useState<"PP" | "P" | "M" | "G" | "GG" | "todos">("todos");
 
     function handleDelete(id: string) {
         setPendingId(id);
@@ -72,8 +75,7 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
 
     let filteredProducts = searchValue
         ? products.filter((product) =>
-            product.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-            product.category.name.toLowerCase().includes(searchValue.toLowerCase())
+            product.name.toLowerCase().includes(searchValue.toLowerCase()) 
         )
         : products;
 
@@ -85,35 +87,89 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
         ? filteredProductsByStatus
         : filteredProductsByStatus.filter((product) => product.category.name === categoryFilter);
 
-    filteredProducts = filteredProductsByCategory || filteredProductsByStatus || filteredProducts
+    const filteredProductsByPrice = priceFilter === "todos" 
+        ? filteredProductsByCategory 
+        : filteredProductsByCategory.filter((product) => {
+            const price = Number(product.price)
+            if (priceFilter === "0-50") return price >= 0 && price <= 50
+            if (priceFilter === "50-100") return price > 50 && price <= 100
+            if (priceFilter === "100-200") return price > 100 && price <= 200
+            if (priceFilter === "200+") return price > 200
+        })
+    
+    const filteredProductsBySizes = sizesFilter === "todos"
+        ? filteredProductsByPrice
+        : filteredProductsByPrice.filter((product) => product.sizes.includes(sizesFilter)); 
+
+    console.log(sizesFilter, filteredProductsBySizes, products[0].sizes)
+        
+    filteredProducts = filteredProductsBySizes || filteredProductsByPrice || filteredProductsByCategory || filteredProductsByStatus || filteredProducts
+        
+    const clearFilters = () => {
+        setSearchValue("")
+        setStatusFilter("todos")
+        setCategoryFilter("todos")
+        setPriceFilter("todos")
+        setSizesFilter("todos")
+    }
 
     return (
         <div className="space-y-4">
 
             <Card>
-                <CardContent className="flex justify-between">
-                    <Input
-                        placeholder="Pesquisar por título ou categoria"
+                <CardContent>
+                    <div  className="flex justify-between">
+                        <Input
+                        placeholder="Pesquisar pelo nome do produto"
                         value={searchValue}
                         onChange={(e) => setSearchValue(e.target.value)}
-                        className="w-2/3"
+                        className="w-2/6"
                     />
 
-                    <div>
-                        <select name="status" id="" className="ms-4" onChange={(e) => setStatusFilter(e.target.value)}>
-                            <option value="todos">Todos</option>
-                            <option value="ativo">Ativos</option>
-                            <option value="inativo">Inativos</option>
-                        </select>
-                        <select name="categoria" id="" className="ms-4" onChange={(e) => setCategoryFilter(e.target.value)}>
-                            <option value="todos">Todas</option>
-                            {categories?.map((categorie, index) => (
-                                <option value={categorie.name} key={`${categorie.id}-categoria-${index}`}>
-                                    {categorie.name}
-                                </option>
-                            ))}
-                        </select>
+                        <div>
+                            <select name="status" id="" className="ms-4" onChange={(e) => setStatusFilter(e.target.value)} value={statusFilter}>
+                                <option value="todos">Status</option>
+                                <option value="ativo">Ativos</option>
+                                <option value="inativo">Inativos</option>
+                            </select>
+                            <select name="categoria" id="" className="ms-4" onChange={(e) => setCategoryFilter(e.target.value)} value={categoryFilter}>
+                                <option value="todos">Categorias</option>
+                                {categories?.map((categorie, index) => (
+                                    <option value={categorie.name} key={`${categorie.id}-categoria-${index}`}>
+                                        {categorie.name}
+                                    </option>
+                                ))}
+                            </select>
+
+                            <Button className="ms-4 min-h-[46px]" onClick={clearFilters} variant="outline">
+                                Limpar Filtros
+                            </Button>
+                            <Button className="ms-4 min-h-[46px]" onClick={() => setSearchAdvancedIsOpen(!searchAdvancedIsOpen)} variant="default">
+                                Busca Avançada
+                            </Button>
+
+                        </div>
                     </div>
+
+                    {searchAdvancedIsOpen && (
+                        <div className="mt-4 flex gap-4">
+                            <select name="faixaPreco" id="faixaPreco" value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
+                                <option value="todos">Faixa de Preço</option>
+                                <option value="0-50">R$ 0,00 - R$ 50,00</option>
+                                <option value="50-100">R$ 50,00 - R$ 100,00</option>
+                                <option value="100-200">R$ 100,00 - R$ 200,00</option>
+                                <option value="200+">Acima de R$ 200,00</option>
+                            </select>
+                            <select name="tamanho" id="tamanho" onChange={(e) => setSizesFilter(e.target.value as "PP" | "P" | "M" | "G" | "GG" | "todos")} value={sizesFilter}>
+                                <option value="todos">Tamanhos</option>
+                                <option value="PP">PP</option>
+                                <option value="P">P</option>
+                                <option value="M">M</option>
+                                <option value="G">G</option>
+                                <option value="GG">GG</option>
+                            </select>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
 
