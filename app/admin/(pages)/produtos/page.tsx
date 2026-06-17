@@ -4,11 +4,14 @@ import HeaderSection from "@/app/components/admin/headerSection";
 import { ProductsTable } from "@/app/components/admin/products-table";
 import Container from "@/app/components/Container";
 import type { fastActionsProps } from "@/app/types/fastActions";
+import { listActiveCategories } from "@/data/categories/get";
 import { listProducts } from "@/data/products/get";
 
-
 export default async function ProductsPage() {
-    const products = await listProducts();
+    const [products, categories] = await Promise.all([
+        listProducts(),
+        listActiveCategories(),
+    ]);
 
     const fastActions: fastActionsProps[] = [
         {
@@ -29,6 +32,8 @@ export default async function ProductsPage() {
         },
     ];
 
+
+
     return (
         <Container>
             <HeaderSection
@@ -39,7 +44,7 @@ export default async function ProductsPage() {
             />
 
             <section id="produtos">
-                <ProductsTable products={products} />
+                <ProductsTable products={products} categories={categories} />
             </section>
         </Container>
     );

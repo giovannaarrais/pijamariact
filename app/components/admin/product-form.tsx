@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Images, Loader2, Shirt } from "lucide-react";
@@ -16,11 +16,13 @@ import { Input } from "@/app/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 
 import type { Category, ProductSize, ProductWithCategory } from "@/app/types/catalog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 import GalleryContent from "./galleryContent";
 import { ImageProps } from "@/app/types/images";
 import Image from "next/image";
 import { imagesSeparated } from "@/utils/imagesSeparated";
+import { boolean } from "zod";
+import { index } from "drizzle-orm/gel-core";
 
 interface ProductFormProps {
     categories: Category[];
@@ -36,6 +38,11 @@ export function ProductForm({ categories, product }: ProductFormProps) {
     const isEditing = Boolean(product);
     const [modalImages, setModalImages] = useState(false)
     const [selectedImages, setSelectedImages] = useState<ImageProps[]>([]);
+    const [openModalImage, setOpenModalImage] = useState({
+        index: 0 ,
+        url: "",
+        open: false
+    })
 
     const {
         register,
@@ -193,13 +200,13 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                                 </Button>
                                 <div className="flex items-center gap-2">
                                     <Check size={14} />
-                                    <span className="text-xs">{selectedImages.length} imagem(ns) selecionada(s)</span>
+                                    <span className="text-xs">{product?.imageUrl ? imagesSeparated(product.imageUrl).length : selectedImages.length} imagem(ns) selecionada(s)</span>
                                 </div>
                             </div>
                             {selectedImages.length > 0 && (
                                 <div className="flex gap-2">
                                     {selectedImages.map((image) => (
-                                        <Image key={image.id} src={image.url} alt={image.name} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl"/>
+                                        <Image key={image.id} src={image.url} alt={image.name} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl" onClick={() => setOpenModalImage({index: Number(image.id), url: image.url, open: true})}/>
                                     ))}
                                 </div>
                             )}
@@ -207,7 +214,10 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                             {selectedImages.length <= 0 && product?.imageUrl && (
                                 <div className="flex gap-2">
                                     {imagesSeparated(product.imageUrl).map((image, index) => (
-                                        <Image key={index} src={image} alt={image} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl"/>
+                                        <div key={index}>
+                                            <Image src={image} alt={image} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl" onClick={() => setOpenModalImage({index, url: image, open: true})}/>
+                                            
+                                        </div>
                                     ))}
                                 </div>
                             )}
@@ -272,6 +282,39 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                         )}
                     </Button>
                 </form>
+
+                {/* Modal de Imagem */}
+                {openModalImage.open && (
+                    <AlertDialog open={openModalImage.open} >
+                        <AlertDialogContent >
+                            <AlertDialogHeader>
+                                <AlertDialogTitle className='text-center w-full font-semibold'>
+                                </AlertDialogTitle>
+                                <AlertDialogDescription className='flex justify-center m-auto'>
+                                    <Image
+                                        src={openModalImage.url} 
+                                        alt={openModalImage.url} 
+                                        width={300}
+                                        height={200}
+                                        className='object-cover w-full rounded-lg'
+                                    />
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogAction
+                                onClick={() => setOpenModalImage({
+                                    index: 0,
+                                    open:false,
+                                    url:"",
+                                })}
+                                >
+                                    Fechar
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                )}
+
             </CardContent>
         </Card>
     );

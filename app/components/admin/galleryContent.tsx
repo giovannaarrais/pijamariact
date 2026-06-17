@@ -350,7 +350,7 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
                     </div>
 
                     {/* Modal de Imagem */}
-                    {openModalImage.open == true && (
+                    {openModalImage.open && (
                         <AlertDialog open={openModalImage.open} key={openModalImage.id}>
                             <AlertDialogContent >
                                 <AlertDialogHeader>
@@ -395,7 +395,6 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
                                 </AlertDialogFooter>
                             </AlertDialogContent>
                         </AlertDialog>
-
                     )}
                 </CardContent>
             </Card>

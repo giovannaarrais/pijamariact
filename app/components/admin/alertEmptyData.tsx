@@ -14,7 +14,7 @@ export function AlertEmptyData({title, description, icon}: AlertEmptyDataProps){
                     <div className="flex items-center justify-center mb-2">
                         <p className="text-primary">{icon}</p>
                     </div>
-                    <h2 className="text-lg font-bold">{title}</h2>
+                    <h2 className="text-lg font-semibold">{title}</h2>
                     <p className="text-muted-foreground">{description}</p>
                 </div>
             </CardContent>
