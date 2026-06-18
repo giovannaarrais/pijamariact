@@ -6,6 +6,7 @@ import Container from "@/app/components/Container";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { getDashboardStats } from "@/services/dashboard";
 
+
 function StatCard({
     title,
     value,
@@ -41,6 +42,9 @@ function formatDate(date: Date) {
 
 export default async function Home() {
     const stats = await getDashboardStats();
+    if (!stats) {
+        return <p>Erro ao carregar dados</p>
+    }
 
     return (
         <main>
@@ -54,7 +58,7 @@ export default async function Home() {
                 <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
                     <StatCard title="Produtos" value={stats.products} href="/admin/produtos" icon={<Shirt size={20} />} />
                     <StatCard title="Categorias" value={stats.categories} href="/admin/categorias" icon={<Grid2x2 size={20} />} />
-                    <StatCard title="Galeria" value={stats.galleryImages} href="/admin/galeria" icon={<ImageUp size={20} />} />
+                    {/* <StatCard title="Galeria" value={stats.galleryImages} href="/admin/galeria" icon={<ImageUp size={20} />} /> */}
                     <StatCard title="Feedbacks" value={stats.feedbacks} href="/admin/feedbacks" icon={<MessageCircle size={20} />} />
                     <StatCard title="Usuarios" value={stats.users} href="/admin/usuarios" icon={<Users size={20} />} />
                 </section>
@@ -68,7 +72,7 @@ export default async function Home() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {stats.recentFeedbacks.length ? (
+                            {stats.recentFeedbacks?.length ? (
                                 <div className="space-y-3">
                                     {stats.recentFeedbacks.map((feedback) => (
                                         <div key={feedback.id} className="rounded-md border p-3">

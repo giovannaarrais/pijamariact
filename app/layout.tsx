@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import Header from "../components/Header";
+import "./styles/globals.css";
 
 export const metadata: Metadata = {
   title: "Pijamariact",
   description: "Pijamaria CT",
 };
 
-export default function PublicLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <Header />
-      {children}
-    </>
+    <html lang="pt-br">
+      <body className="antialiased">{children}</body>
+    </html>
   );
 }

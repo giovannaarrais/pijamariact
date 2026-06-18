@@ -145,14 +145,14 @@ export function ProductsTable({ products, categories }: ProductsTableProps) {
                                 Limpar Filtros
                             </Button>
                             <Button className="ms-4 min-h-[46px]" onClick={() => setSearchAdvancedIsOpen(!searchAdvancedIsOpen)} variant="default">
-                                Busca Avançada
+                                Filtros Avançados
                             </Button>
 
                         </div>
                     </div>
 
                     {searchAdvancedIsOpen && (
-                        <div className="mt-4 flex gap-4">
+                        <div className="mt-4 flex gap-4 justify-end border-t py-4">
                             <select name="faixaPreco" id="faixaPreco" value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
                                 <option value="todos">Faixa de Preço</option>
                                 <option value="0-50">R$ 0,00 - R$ 50,00</option>
