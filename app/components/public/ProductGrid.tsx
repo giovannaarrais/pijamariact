@@ -1,6 +1,8 @@
 'use client'
 
 
+import { ProductWithCategory } from "@/app/types/catalog";
+import { formatPrice } from "@/utils/formatPrice";
 import { motion } from "framer-motion";
 import { Instagram } from "lucide-react";
 
@@ -13,7 +15,16 @@ const products = [
   { name: "Camisola Lavanda", category: "Lingerie", image: '/assets/product-robe-1.jpg', price: "R$ 69,90" },
 ];
 
-const ProductGrid = () => {
+interface ProductsGridProps {
+  products: ProductWithCategory[] | null;
+}
+
+const ProductGrid = ({ products }: ProductsGridProps) => {
+  if (!products || products.length <= 0) {
+    return null;
+  }
+
+
   return (
     <section id="catalogo" className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
@@ -34,9 +45,12 @@ const ProductGrid = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product, i) => (
-            <motion.div
-              key={product.name}
+          {products.map((product, i) => {
+            if(!product.imageUrl) return ;
+
+            return (
+              <motion.div
+              key={product.id}
               className="group bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -45,18 +59,18 @@ const ProductGrid = () => {
             >
               <div className="aspect-[3/4] overflow-hidden">
                 <img
-                  src={product.image}
+                  src={product.imageUrl}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
               <div className="p-4">
                 <span className="font-body text-xs tracking-widest uppercase text-primary">
-                  {product.category}
+                  {product.category.name}
                 </span>
                 <h3 className="font-heading text-lg text-foreground mt-1">{product.name}</h3>
                 <div className="flex items-center justify-between mt-3">
-                  <span className="font-body font-bold text-foreground">{product.price}</span>
+                  <span className="font-body font-bold text-foreground">{formatPrice(product.price)}</span>
                   <a
                     href="https://www.instagram.com/pijamariact/"
                     target="_blank"
@@ -69,7 +83,8 @@ const ProductGrid = () => {
                 </div>
               </div>
             </motion.div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

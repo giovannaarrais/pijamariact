@@ -200,7 +200,11 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                                 </Button>
                                 <div className="flex items-center gap-2">
                                     <Check size={14} />
-                                    <span className="text-xs">{product?.imageUrl ? imagesSeparated(product.imageUrl).length : selectedImages.length} imagem(ns) selecionada(s)</span>
+                                     <span className="text-xs">{selectedImages.length 
+                                    ? selectedImages.length 
+                                    :  product?.imageUrl
+                                    ? imagesSeparated(product.imageUrl).length 
+                                    : 0} imagem(ns) selecionada(s)</span>
                                 </div>
                             </div>
                             {selectedImages.length > 0 && (
@@ -237,8 +241,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                                     <GalleryContent imagesSelecteds={imagesSelecteds}/>
                                   
                                     <AlertDialogFooter className="sticky bottom-0 z-10 bg-white rounded-3xl p-3 shadow">
-                                        <AlertDialogCancel onClick={() => setModalImages(false)}>Cancelar</AlertDialogCancel>
-                                        <AlertDialogAction>Confirmar</AlertDialogAction>
+                                        <AlertDialogCancel onClick={() => setModalImages(false)}>Fechar</AlertDialogCancel>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>

@@ -8,6 +8,7 @@ import { auth } from "@/lib/auth";
 import { createCategory, deleteCategory, updateCategory } from "@/services/categories";
 
 import type { ActionResult, Category } from "@/app/types/catalog";
+import { imagesSeparated } from "@/utils/imagesSeparated";
 
 async function assertAdmin() {
     const session = await auth.api.getSession({
@@ -30,7 +31,18 @@ export async function createCategoryAction(data: CategoryFormSchema): Promise<Ac
         await assertAdmin();
 
         const values = categoryFormSchema.parse(data);
+        if(values.imageUrl){
+            const images = imagesSeparated(values.imageUrl)
+            if(images.length > 1){
+                return {
+                    success: false,
+                    message: "So é permitido uma imagem por categoria.",
+                }
+            }
+        }
+
         const category = await createCategory(values);
+
 
         revalidatePath("/admin/categorias");
 
@@ -53,8 +65,17 @@ export async function updateCategoryAction(data: CategoryUpdateSchema): Promise<
         await assertAdmin();
 
         const values = categoryUpdateSchema.parse(data);
-        const category = await updateCategory(values.id, values);
+        if(values.imageUrl){
+            const images = imagesSeparated(values.imageUrl)
+            if(images.length > 1){
+                return {
+                    success: false,
+                    message: "So é permitido uma imagem por categoria.",
+                }
+            }
+        }
 
+        const category = await updateCategory(values.id, values);
         if (!category) {
             return {
                 success: false,

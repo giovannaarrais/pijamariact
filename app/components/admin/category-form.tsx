@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, Tags } from "lucide-react";
+import { Check, Images, Loader2, Tags } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 
 import { createCategoryAction, updateCategoryAction } from "@/actions/categories";
@@ -16,6 +16,11 @@ import { Input } from "@/app/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/app/components/ui/select";
 
 import type { Category } from "@/app/types/catalog";
+import { ImageProps } from "@/app/types/images";
+import Image from "next/image";
+import { imagesSeparated } from "@/utils/imagesSeparated";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+import GalleryContent from "./galleryContent";
 
 interface CategoryFormProps {
     category?: Category;
@@ -26,6 +31,14 @@ export function CategoryForm({ category }: CategoryFormProps) {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<string>();
     const isEditing = Boolean(category);
+    const [modalImages, setModalImages] = useState(false)
+    const [selectedImages, setSelectedImages] = useState<ImageProps[]>([]);
+    const [openModalImage, setOpenModalImage] = useState({
+        index: 0 ,
+        url: "",
+        open: false
+    })
+    
 
     const {
         register,
@@ -33,6 +46,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
         control,
         formState: { errors, isSubmitting },
         reset,
+        setValue,
     } = useForm<CategoryFormSchema>({
         resolver: zodResolver(categoryFormSchema),
         defaultValues: {
@@ -72,6 +86,19 @@ export function CategoryForm({ category }: CategoryFormProps) {
         setError(result.message);
     }
 
+    function imagesSelecteds(images: ImageProps[]){
+        if(images && images.length > 0){
+            setModalImages(false)
+            setSelectedImages(images)
+            setValue("imageUrl", images.map((image) => image.url).join(", "))
+        } else{
+            setModalImages(false)
+            setSelectedImages([])
+            setValue("imageUrl", "")
+        }
+
+    }
+
     return (
         <Card>
             <CardHeader>
@@ -101,8 +128,60 @@ export function CategoryForm({ category }: CategoryFormProps) {
 
                         <div className="relative md:col-span-2">
                             {errors.imageUrl && <ErrorInput message={errors.imageUrl.message} />}
-                            <Input id="imageUrl" placeholder="URL da imagem" {...register("imageUrl")} />
+                             <div className="flex gap-2 mb-3">
+                                <Button type="button" onClick={() => setModalImages(true)}>
+                                    <Images />
+                                    Selecionar Imagem
+                                </Button>
+                                <div className="flex items-center gap-2">
+                                    <Check size={14} />
+                                    <span className="text-xs">{selectedImages.length 
+                                    ? selectedImages.length 
+                                    :  category?.imageUrl
+                                    ? imagesSeparated(category.imageUrl).length 
+                                    : 0} imagem(ns) selecionada(s)</span>
+                                </div>
+                            </div>
+                            {selectedImages.length > 0 && (
+                                <div className="flex gap-2">
+                                    {selectedImages.map((image) => (
+                                        <Image key={image.id} src={image.url} alt={image.name} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl" onClick={() => setOpenModalImage({index: Number(image.id), url: image.url, open: true})}/>
+                                    ))}
+                                </div>
+                            )}
+
+                            {selectedImages.length <= 0 && category?.imageUrl && (
+                                <div className="flex gap-2">
+                                    {imagesSeparated(category.imageUrl).map((image, index) => (
+                                        <div key={index}>
+                                            <Image src={image} alt={image} width={150} height={150} className="object-cover max-h-[150px] rounded-3xl" onClick={() => setOpenModalImage({index, url: image, open: true})}/>
+                                            
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
+
+                        {modalImages && (
+                            <AlertDialog open={modalImages} onOpenChange={setModalImages}>
+                                <AlertDialogContent className="!w-[90vw] !max-w-[90vw] max-h-[90vh]  overflow-y-auto">
+
+                                <AlertDialogTrigger>
+                                    <AlertDialogTitle>Selecionar Imagem</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        Selecione uma imagem para o produto
+                                    </AlertDialogDescription>
+                                </AlertDialogTrigger>
+                                    
+                                    <GalleryContent imagesSelecteds={imagesSelecteds}/>
+                                  
+                                    <AlertDialogFooter className="sticky bottom-0 z-10 bg-white rounded-3xl p-3 shadow">
+                                        <AlertDialogCancel onClick={() => setModalImages(false)}>Fechar</AlertDialogCancel>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        )}
+                    </div>
 
                         <div className="relative md:col-span-2">
                             {errors.description && <ErrorInput message={errors.description.message} />}
@@ -137,7 +216,6 @@ export function CategoryForm({ category }: CategoryFormProps) {
                                 )}
                             />
                         </div>
-                    </div>
 
                     <Button disabled={isSubmitting} type="submit" className="w-full cursor-pointer">
                         {isSubmitting ? (
@@ -150,6 +228,38 @@ export function CategoryForm({ category }: CategoryFormProps) {
                         )}
                     </Button>
                 </form>
+
+                {/* Modal de Imagem */}
+                {openModalImage.open && (
+                    <AlertDialog open={openModalImage.open} >
+                        <AlertDialogContent >
+                            <AlertDialogHeader>
+                                <AlertDialogTitle className='text-center w-full font-semibold'>
+                                </AlertDialogTitle>
+                                <AlertDialogDescription className='flex justify-center m-auto'>
+                                    <Image
+                                        src={openModalImage.url} 
+                                        alt={openModalImage.url} 
+                                        width={300}
+                                        height={200}
+                                        className='object-cover w-full rounded-lg'
+                                    />
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogAction
+                                onClick={() => setOpenModalImage({
+                                    index: 0,
+                                    open:false,
+                                    url:"",
+                                })}
+                                >
+                                    Fechar
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                )}
             </CardContent>
         </Card>
     );

@@ -2,7 +2,7 @@ import { List, Plus, Shirt } from "lucide-react";
 
 import HeaderSection from "@/app/components/admin/headerSection";
 import { ProductsTable } from "@/app/components/admin/products-table";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import type { fastActionsProps } from "@/app/types/fastActions";
 import { listActiveCategories } from "@/data/categories/get";
 import { listProducts } from "@/data/products/get";

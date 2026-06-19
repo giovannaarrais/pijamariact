@@ -34,6 +34,21 @@ export async function getProducts(): Promise<ProductWithCategory[]> {
     return products.map(mapProduct);
 }
 
+
+export async function getProductsActive(): Promise<ProductWithCategory[]> {
+    const products = await db.query.productsTable.findMany({
+        where: eq(productsTable.active, true),
+        with: {
+            category: true,
+            sizes: true,
+        },
+        orderBy: [desc(productsTable.createdAt)],
+    });
+
+    return products.map(mapProduct);
+}
+
+
 export async function getProductById(id: string): Promise<ProductWithCategory | null> {
     const product = await db.query.productsTable.findFirst({
         where: eq(productsTable.id, id),

@@ -2,7 +2,7 @@ import { deleteUserAction } from "@/actions/users/delete";
 import { updateUserAction } from "@/actions/users/update";
 import HeaderSection from "@/app/components/admin/headerSection";
 import { TableUsers } from "@/app/components/admin/tableUsers";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import { fastActionsProps } from "@/app/types/fastActions";
 import { getUsers } from "@/data/users/get";
 import {List, Plus, Users } from "lucide-react";

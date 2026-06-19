@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Grid2x2, ImageUp, MessageCircle, Shirt, Users } from "lucide-react";
 
 import HeaderSection from "@/app/components/admin/headerSection";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { getDashboardStats } from "@/services/dashboard";
 

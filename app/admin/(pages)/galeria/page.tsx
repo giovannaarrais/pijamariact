@@ -1,7 +1,7 @@
 import { ImageUp, Plus } from "lucide-react";
 
 import { Button } from "@/app/components/ui/button";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import HeaderSection from "@/app/components/admin/headerSection";
 import GalleryContent from "@/app/components/admin/galleryContent";
 

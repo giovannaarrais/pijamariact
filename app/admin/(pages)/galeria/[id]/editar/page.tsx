@@ -3,7 +3,7 @@ import { ImageUp } from "lucide-react";
 
 import { GalleryForm } from "@/app/components/admin/gallery-form";
 import HeaderSection from "@/app/components/admin/headerSection";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import { findGalleryImageById } from "@/data/gallery/get";
 
 export const dynamic = "force-dynamic";

@@ -2,7 +2,7 @@ import { Shirt } from "lucide-react";
 
 import HeaderSection from "@/app/components/admin/headerSection";
 import { ProductForm } from "@/app/components/admin/product-form";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import { listActiveCategories } from "@/data/categories/get";
 
 export const dynamic = "force-dynamic";

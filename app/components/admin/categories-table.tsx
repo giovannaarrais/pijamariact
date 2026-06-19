@@ -22,6 +22,8 @@ import {
 import { Button } from "@/app/components/ui/button";
 
 import type { Category } from "@/app/types/catalog";
+import Image from "next/image";
+import { imagesSeparated } from "@/utils/imagesSeparated";
 
 interface CategoriesTableProps {
     categories: Category[] | null;
@@ -66,11 +68,28 @@ export function CategoriesTable({ categories }: CategoriesTableProps) {
 
             <TableComponent
                 title="Lista de Categorias Cadastradas"
-                tableHeads={["Nº", "Nome", "Slug", "Status", "Criada em", "Atualizada em", "Ações"]}
+                tableHeads={["Nº", "Nome", "Slug","Imagem", "Status", "Criada em", "Atualizada em", "Ações"]}
                 tableRows={categories.map((category, index) => [
                     index + 1,
                     category.name,
                     category.slug,
+                     <div className=" flex ">
+                        {category.imageUrl &&category.imageUrl?.length > 0 ? (
+                           <div className="flex items-center gap-2">
+                             <Image
+                                key={`${category.id}-image`}
+                                src={imagesSeparated(category.imageUrl)[0]}
+                                alt={category.name}
+                                width={48}
+                                height={48}
+                                className="h-12 w-12 rounded-md object-cover"
+                            />
+                               
+                           </div>
+                        ): (
+                            <div>-</div>
+                        )}
+                    </div>,
                     <span
                         key={`${category.id}-status`}
                         className={`rounded-full px-2 py-1 text-xs font-medium ${category.active ? "bg-green-100 text-green-700" : "bg-zinc-100 text-zinc-600"}`}

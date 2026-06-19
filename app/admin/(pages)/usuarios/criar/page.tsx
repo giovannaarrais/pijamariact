@@ -1,5 +1,5 @@
 'use client'
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import { Button } from "@/app/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";

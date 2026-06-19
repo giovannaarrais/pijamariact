@@ -3,7 +3,7 @@ import { Grid2x2 } from "lucide-react";
 
 import { CategoryForm } from "@/app/components/admin/category-form";
 import HeaderSection from "@/app/components/admin/headerSection";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import { findCategoryById } from "@/data/categories/get";
 
 export const dynamic = "force-dynamic";

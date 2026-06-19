@@ -4,18 +4,18 @@ import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
-    <section id="inicio" className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+    <section id="inicio" className="relative min-h-[55vh] flex items-center justify-center overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(assets/hero-bg.jpg)` }}
       />
       <div className="absolute inset-0 bg-foreground/40" />
 
-      <div className="relative z-10 text-center px-4">
+      <div className="relative z-10 text-center px-4 mt-[5rem]">
         <motion.img
           src={'/assets/logo.png'}
           alt="Pijamaria CT"
-          className="h-32 sm:h-44 w-auto mx-auto mb-8 drop-shadow-2xl"
+          className="h-32 sm:h-40 w-auto mx-auto mb-8 drop-shadow-2xl"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}

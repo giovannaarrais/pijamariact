@@ -2,7 +2,7 @@ import { Grid2x2, List, Plus } from "lucide-react";
 
 import { CategoriesTable } from "@/app/components/admin/categories-table";
 import HeaderSection from "@/app/components/admin/headerSection";
-import Container from "@/app/components/Container";
+import Container from "@/app/components/public/Container";
 import type { fastActionsProps } from "@/app/types/fastActions";
 import { listCategories } from "@/data/categories/get";
 
