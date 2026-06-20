@@ -7,12 +7,14 @@ import InstagramFeed from "../components/public/InstagramFeed";
 import ProductGrid from "../components/public/ProductGrid";
 import Testimonials from "../components/public/Testimonials";
 import { listActiveProducts } from "@/data/products/get";
+import { listFeedbacks } from "@/data/feedbacks/get";
 
 export default async function Home() {
 
-  const [products, categories] = await Promise.all([
+  const [products, categories, testimonials] = await Promise.all([
     listActiveProducts(),
-    listActiveCategories()
+    listActiveCategories(),
+    listFeedbacks()
   ]);
 
   return (
@@ -22,9 +24,8 @@ export default async function Home() {
         <Hero />
         <Categories categories={categories}/>
         <ProductGrid products={products}/>
-        <Testimonials />
+        <Testimonials testimonials={testimonials || []} />
         {/* <InstagramFeed /> */}
-        <Contact />
         <Footer />
       </main>
     </div>

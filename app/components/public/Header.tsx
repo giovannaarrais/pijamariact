@@ -9,27 +9,34 @@ import Image from "next/image";
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const menuItems =[
+    { name: "Início", href: "/" },
+    { name: "Catálogo", href: "/catalogo" },
+    { name: "Categorias", href: "/categorias" },
+    { name: "Contato", href: "/contato" },
+  ]
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           <a href="#" className="flex items-center gap-3">
             <Image
-              src='/assets/logo.png'
+              src='/logo.png'
               alt=''
-              width={70}
-              height={70}
+              width={90}
+              height={90}
             />
           </a>
 
           <nav className="hidden md:flex items-center gap-8">
-            {["Início", "Catálogo", "Categorias", "Contato"].map((item) => (
+            {menuItems.map((item) => (
               <a
-                key={item}
-                href={`#${item.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}
+                key={item.name}
+                href={item.href}
                 className="font-body text-sm tracking-widest uppercase text-muted-foreground hover:text-primary transition-colors"
               >
-                {item}
+                {item.name}
               </a>
             ))}
           </nav>

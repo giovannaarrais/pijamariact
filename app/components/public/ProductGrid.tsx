@@ -5,15 +5,14 @@ import { ProductWithCategory } from "@/app/types/catalog";
 import { formatPrice } from "@/utils/formatPrice";
 import { motion } from "framer-motion";
 import { Instagram } from "lucide-react";
-
-const products = [
-  { name: "Conjunto Rosa Cetim", category: "Pijamas", image: '/assets/product-pijama-1.jpg', price: "R$ 89,90" },
-  { name: "Sutiã Renda Branca", category: "Lingerie", image: '/assets/product-pijama-2.jpg', price: "R$ 59,90" },
-  { name: "Conjunto Verde Menta", category: "Pijamas", image: '/assets/product-pijama-3.jpg', price: "R$ 79,90" },
-  { name: "Robe Rosé com Renda", category: "Robes", image: '/assets/product-lingerie-1.jpg', price: "R$ 119,90" },
-  { name: "Pijama Floral Marinho", category: "Pijamas", image: '/assets/product-lingerie-2.jpg', price: "R$ 99,90" },
-  { name: "Camisola Lavanda", category: "Lingerie", image: '/assets/product-robe-1.jpg', price: "R$ 69,90" },
-];
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { imagesSeparated } from "@/utils/imagesSeparated";
+import Image from "next/image";
+import { Navigation } from "swiper/modules";
+import Link from "next/link";
+import ProductCard from "./ProductCard";
 
 interface ProductsGridProps {
   products: ProductWithCategory[] | null;
@@ -23,6 +22,7 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
   if (!products || products.length <= 0) {
     return null;
   }
+
 
 
   return (
@@ -47,6 +47,7 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product, i) => {
             if(!product.imageUrl) return ;
+            
 
             return (
               <motion.div
@@ -57,34 +58,18 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
             >
-              <div className="aspect-[3/4] overflow-hidden">
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-4">
-                <span className="font-body text-xs tracking-widest uppercase text-primary">
-                  {product.category.name}
-                </span>
-                <h3 className="font-heading text-lg text-foreground mt-1">{product.name}</h3>
-                <div className="flex items-center justify-between mt-3">
-                  <span className="font-body font-bold text-foreground">{formatPrice(product.price)}</span>
-                  <a
-                    href="https://www.instagram.com/pijamariact/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-xs font-body tracking-wider uppercase text-primary hover:opacity-80 transition-opacity"
-                  >
-                    <Instagram size={14} />
-                    Pedir
-                  </a>
-                </div>
-              </div>
+              <ProductCard product={product} />
+              
             </motion.div>
             )
           })}
+        </div>
+        <div className="mt-10 text-center">
+            <Link
+              href={"/catalogo"}
+              className="bg-primary p-3 text-white rounded-full px-6 cursor-pointer hover:bg-primary/80 transition-colors duration-300" >
+              Ver catálogo completo
+            </Link>
         </div>
       </div>
     </section>

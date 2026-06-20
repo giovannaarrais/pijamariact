@@ -9,7 +9,7 @@ const Hero = () => {
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(assets/hero-bg.jpg)` }}
       />
-      <div className="absolute inset-0 bg-foreground/40" />
+      <div className="absolute inset-0 bg-foreground/60" />
 
       <div className="relative z-10 text-center px-4 mt-[5rem]">
         <motion.img

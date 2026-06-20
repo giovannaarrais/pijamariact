@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 const testimonials = [
   {
@@ -24,9 +26,22 @@ const testimonials = [
   },
 ];
 
-const Testimonials = () => {
+interface Testimonial {
+  name: string;
+  message: string;
+  rating: number;
+}
+
+interface TestimonialsProps {
+  testimonials: Testimonial[] | null;
+}
+
+const Testimonials = ({ testimonials }: TestimonialsProps) => {
+  if(!testimonials || testimonials.length === 0) return null;
+  console.log(testimonials)
+
   return (
-    <section className="py-20 px-4 bg-card">
+    <section id="testimonials" className="py-20 px-4 bg-card">
       <div className="max-w-5xl mx-auto">
         <motion.div
           className="text-center mb-14"
@@ -41,36 +56,55 @@ const Testimonials = () => {
           <div className="w-16 h-0.5 bg-primary mx-auto" />
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="py-5 ">
+           <Swiper
+            className="h-full"
+            spaceBetween={50}
+            slidesPerView={3}
+            speed={1000}
+            loop={true}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            // navigation={true}
+            // modules={[Navigation]}
+          >
+
           {testimonials.map((t, i) => (
-            <motion.div
-              key={t.name}
-              className="bg-background rounded-xl p-6 shadow-sm border border-border"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.15, duration: 0.5 }}
-            >
-              <div className="flex gap-1 mb-4">
-                {Array.from({ length: t.rating }).map((_, idx) => (
-                  <Star
-                    key={idx}
-                    size={16}
-                    className="fill-primary text-primary"
-                  />
-                ))}
-              </div>
-              <p className="font-body text-sm text-muted-foreground leading-relaxed mb-6 italic">
-                &quot;{t.text}&quot;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="font-heading text-sm text-primary">{t.initials}</span>
+            <SwiperSlide>
+              <motion.div
+                key={t.name}
+                className="bg-background rounded-xl p-6 shadow-sm border border-border min-h-[210px]"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.5 }}
+              >
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: t.rating }).map((_, idx) => (
+                    <Star
+                      key={idx}
+                      size={16}
+                      className="fill-primary text-primary"
+                    />
+                  ))}
                 </div>
-                <span className="font-body text-sm font-bold text-foreground">{t.name}</span>
-              </div>
-            </motion.div>
+                <p className="font-body text-sm text-muted-foreground leading-relaxed mb-6 italic">
+                  &quot;{t.message}&quot;
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                    <span className="font-heading text-sm text-primary">
+                      {t.name.split(' ')[0][0] + (t.name.split(' ').length > 1 ? t.name.split(' ')[t.name.split(' ').length - 1][0] : '')}
+                    </span>
+                  </div>
+                  <span className="font-body text-sm font-bold text-foreground">{t.name}</span>
+                </div>
+              </motion.div>
+            </SwiperSlide>
           ))}
+          </Swiper>
         </div>
       </div>
     </section>

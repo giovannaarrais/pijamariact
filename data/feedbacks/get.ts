@@ -4,7 +4,9 @@ import { getFeedbackById, getFeedbacks } from "@/services/feedbacks";
 
 export async function listFeedbacks() {
     try {
-        return await getFeedbacks();
+        const feedbacks = await getFeedbacks();
+        if(!feedbacks || feedbacks.length === 0) return null;
+        return feedbacks;
     } catch (error) {
         console.error(error);
         return null;

@@ -4,7 +4,9 @@ import { getProductById, getProducts, getProductsActive } from "@/services/produ
 
 export async function listProducts() {
     try {
-        return await getProducts();
+        const products = await getProducts();
+        if(!products) return null;
+        return products;
     } catch (error) {
         console.error(error);
         return null;
