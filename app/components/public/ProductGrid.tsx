@@ -27,7 +27,7 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
 
   return (
     <section id="catalogo" className="py-20 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="px-10">
         <motion.div
           className="text-center mb-14"
           initial={{ opacity: 0, y: 30 }}
@@ -44,7 +44,7 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
           {products.map((product, i) => {
             if(!product.imageUrl) return ;
             

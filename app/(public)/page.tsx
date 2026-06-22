@@ -12,7 +12,7 @@ import { listFeedbacks } from "@/data/feedbacks/get";
 export default async function Home() {
 
   const [products, categories, testimonials] = await Promise.all([
-    listActiveProducts(),
+    listActiveProducts(6),
     listActiveCategories(),
     listFeedbacks()
   ]);

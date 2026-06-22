@@ -15,9 +15,9 @@ export async function listProducts() {
 
 
 
-export async function listActiveProducts() {
+export async function listActiveProducts(limit?: number) {
     try {
-        const products = await getProductsActive();
+        const products = await getProductsActive(limit);
         
         if (!products || products.length <= 0) {
             return null;

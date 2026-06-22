@@ -35,9 +35,10 @@ export async function getProducts(): Promise<ProductWithCategory[]> {
 }
 
 
-export async function getProductsActive(): Promise<ProductWithCategory[]> {
+export async function getProductsActive(limit?: number): Promise<ProductWithCategory[]> {
     const products = await db.query.productsTable.findMany({
         where: eq(productsTable.active, true),
+        ...(limit ? { limit: limit } : {}),
         with: {
             category: true,
             sizes: true,
