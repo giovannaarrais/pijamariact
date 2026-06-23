@@ -122,6 +122,9 @@
   font-family: "Lato", sans-serif;
   font-style: normal;
 }
+main{
+  background-color: white;
+}
 
 .font-secondary {
   font-family: "Playfair Display", serif !important;
@@ -162,20 +165,20 @@ select:focus{
 
 
 
-#catalogo .swiper-navigation-icon path{
+.products-box .swiper-navigation-icon path{
   fill: darkgray !important;
 }   
-#catalogo .swiper-navigation-icon{
+.products-box .swiper-navigation-icon{
   width: 16px !important;
 } 
 
-#catalogo .swiper-button-next,
-#catalogo .swiper-button-prev{
+.products-box .swiper-button-next,
+.products-box .swiper-button-prev{
   top: auto !important;
   bottom: 0 !important;
 }
 
-#catalogo .swiper-button-prev{
+.products-box .swiper-button-prev{
   left: auto !important;
   right: 2.5rem !important;
 }

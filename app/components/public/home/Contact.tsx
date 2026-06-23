@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Instagram, MessageCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Contact = () => {
   return (
@@ -34,7 +35,7 @@ const Contact = () => {
             alt="Pijamaria CT"
           />
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="https://www.instagram.com/pijamariact/"
               target="_blank"
               rel="noopener noreferrer"
@@ -42,8 +43,8 @@ const Contact = () => {
             >
               <Instagram size={18} />
               Siga no Instagram
-            </a>
-            <a
+            </Link>
+            <Link
               href="https://wa.me/?text=Olá! Vi o catálogo da Pijamaria CT e gostaria de saber mais!"
               target="_blank"
               rel="noopener noreferrer"
@@ -51,7 +52,7 @@ const Contact = () => {
             >
               <MessageCircle size={18} />
               WhatsApp
-            </a>
+            </Link>
           </div>
           </div>
         </motion.div>

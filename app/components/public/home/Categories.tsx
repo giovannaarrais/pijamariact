@@ -20,7 +20,7 @@ const Categories = ({categories}: CategoriesProps) => {
   if(categories == null || categories.length <= 0 ) return;
   
   return (
-    <section id="categorias" className="py-20 px-4 bg-muted/50">
+    <section id="categorias" className="py-20 px-4">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-14"

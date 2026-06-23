@@ -41,7 +41,7 @@ const Testimonials = ({ testimonials }: TestimonialsProps) => {
   console.log(testimonials)
 
   return (
-    <section id="testimonials" className="py-20 px-4 bg-card">
+    <section id="testimonials" className="py-20 pb-0 px-4 bg-card">
       <div className="max-w-5xl mx-auto">
         <motion.div
           className="text-center mb-14"

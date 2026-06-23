@@ -1,10 +1,11 @@
 'use client'
 
 import { motion } from "framer-motion";
-import { Instagram, Menu, X } from "lucide-react";
+import { Instagram, Menu, MessageCircle, X } from "lucide-react";
 import logo from "@/app/assets/logo.png";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,7 +21,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          <a href="#" className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-3">
             <Image
               src='/logo.png'
               alt=''
@@ -42,14 +43,23 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-4">
-            <a
+            <Link
               href="https://www.instagram.com/pijamariact/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
               <Instagram size={20} />
-            </a>
+            </Link>
+              <Link
+              href="https://wa.me/+556184940710?text=Olá! Vi o catálogo da Pijamaria CT e gostaria de saber mais!"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground text-xs tracking-widest uppercase px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
+            >
+              <MessageCircle size={18} />
+              WhatsApp
+            </Link>
             <button
               className="md:hidden text-foreground"
               onClick={() => setMenuOpen(!menuOpen)}

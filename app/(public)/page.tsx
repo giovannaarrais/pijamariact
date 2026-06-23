@@ -1,13 +1,13 @@
 import { listActiveCategories } from "@/data/categories/get";
-import Categories from "../components/public/Categories";
-import Contact from "../components/public/Contact";
-import Footer from "../components/public/Footer";
-import Hero from "../components/public/Hero";
-import InstagramFeed from "../components/public/InstagramFeed";
-import ProductGrid from "../components/public/ProductGrid";
-import Testimonials from "../components/public/Testimonials";
+import Categories from "../components/public/home/Categories";
+import Contact from "../components/public/home/Contact";
+import Footer from "../components/public/home/Footer";
+import Hero from "../components/public/home/Hero";
+import InstagramFeed from "../components/public/home/InstagramFeed";
+import Testimonials from "../components/public/home/Testimonials";
 import { listActiveProducts } from "@/data/products/get";
 import { listFeedbacks } from "@/data/feedbacks/get";
+import Products from "../components/public/products/Products";
 
 export default async function Home() {
 
@@ -19,15 +19,11 @@ export default async function Home() {
 
   return (
     <div className="">
-      <main className="">
-      
         <Hero />
         <Categories categories={categories}/>
-        <ProductGrid products={products}/>
+        <Products products={products}/>
         <Testimonials testimonials={testimonials || []} />
         {/* <InstagramFeed /> */}
-        <Footer />
-      </main>
     </div>
   );
 }

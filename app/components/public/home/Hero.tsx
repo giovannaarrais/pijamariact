@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 
 const Hero = () => {
   return (
-    <section id="inicio" className="relative min-h-[450px] flex items-center justify-center overflow-hidden">
+    <section id="inicio" className="relative py-18 flex items-center justify-center overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{ backgroundImage: `url(assets/hero-bg.jpg)` }}
       />
       <div className="absolute inset-0 bg-foreground/60" />
 
-      <div className="relative z-10 text-center px-4 mt-12">
+      <div className="relative z-10 text-center px-4">
         <motion.img
           src={'/assets/logo.png'}
           alt="Pijamaria CT"

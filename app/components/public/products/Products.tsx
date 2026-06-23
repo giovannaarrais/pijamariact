@@ -13,12 +13,13 @@ import Image from "next/image";
 import { Navigation } from "swiper/modules";
 import Link from "next/link";
 import ProductCard from "./ProductCard";
+import ProductGrid from "./ProductGrid";
 
 interface ProductsGridProps {
   products: ProductWithCategory[] | null;
 }
 
-const ProductGrid = ({ products }: ProductsGridProps) => {
+const Products = ({ products }: ProductsGridProps) => {
   if (!products || products.length <= 0) {
     return null;
   }
@@ -26,7 +27,7 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
 
 
   return (
-    <section id="catalogo" className="py-20 px-4">
+    <section id="catalogo" className="py-20 px-4 bg-primary/10">
       <div className="px-10">
         <motion.div
           className="text-center mb-14"
@@ -44,26 +45,8 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-          {products.map((product, i) => {
-            if(!product.imageUrl) return ;
-            
-
-            return (
-              <motion.div
-              key={product.id}
-              className="group bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.4 }}
-            >
-              <ProductCard product={product} />
-              
-            </motion.div>
-            )
-          })}
-        </div>
+        <ProductGrid products={products}/>
+       
         <div className="mt-10 text-center">
             <Link
               href={"/catalogo"}
@@ -76,4 +59,4 @@ const ProductGrid = ({ products }: ProductsGridProps) => {
   );
 };
 
-export default ProductGrid;
+export default Products;
