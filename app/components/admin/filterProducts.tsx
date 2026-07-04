@@ -10,9 +10,10 @@ interface FilterProductsProps {
     products: ProductWithCategory[] | null | undefined;
     categories: Category[] | null | undefined;
     onFilteredProducts: (filtered: ProductWithCategory[]) => void;
+    exibicaoFront?: boolean;
 }
 
-const FilterProducts = ({ products, categories, onFilteredProducts }: FilterProductsProps) => {
+const FilterProducts = ({ products, categories, onFilteredProducts, exibicaoFront }: FilterProductsProps) => {
     const [searchValue, setSearchValue] = useState<string>("")
     const [statusFilter, setStatusFilter] = useState<string>("todos")
     const [categoryFilter, setCategoryFilter] = useState<string>("todos")
@@ -69,21 +70,29 @@ const FilterProducts = ({ products, categories, onFilteredProducts }: FilterProd
     return (
             <Card>
                 <CardContent>
-                    <div  className="flex justify-between">
-                        <Input
-                        placeholder="Pesquisar pelo nome do produto"
-                        value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
-                        className="w-2/6"
-                    />
-
+                    {exibicaoFront && (
                         <div>
-                            <select name="status" id="" className="ms-4" onChange={(e) => setStatusFilter(e.target.value)} value={statusFilter}>
-                                <option value="todos">Status</option>
-                                <option value="ativo">Ativos</option>
-                                <option value="inativo">Inativos</option>
-                            </select>
-                            <select name="categoria" id="" className="ms-4" onChange={(e) => setCategoryFilter(e.target.value)} value={categoryFilter}>
+                            <h1 className="text-2xl font-bold ">Filtros</h1>
+                            <p className="text-muted-foreground mb-4">Filtre os produtos por nome, categoria, status, faixa de preço e tamanho</p>
+                        </div>
+                    )}
+                    <div  className={`flex justify-between ${exibicaoFront ? "flex-col" : "flex-row"}`}>
+                        <Input
+                            placeholder="Pesquisar pelo nome do produto"
+                            value={searchValue}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            className={`${exibicaoFront ? "w-full! mb-6! " : ""} w-2/6 mb-3 `}
+                        />
+
+                        <div className={`flex gap-3 ${exibicaoFront ? "lg:flex-col flex-wrap" : "flex-row  items-center"}`}>
+                            {!exibicaoFront && (
+                                <select name="status" id="" className="" onChange={(e) => setStatusFilter(e.target.value)} value={statusFilter}>
+                                    <option value="todos">Status</option>
+                                    <option value="ativo">Ativos</option>
+                                    <option value="inativo">Inativos</option>
+                                </select>
+                            )}
+                            <select name="categoria" id="" className="" onChange={(e) => setCategoryFilter(e.target.value)} value={categoryFilter}>
                                 <option value="todos">Categorias</option>
                                 {categories?.map((categorie, index) => (
                                     <option value={categorie.name} key={`${categorie.id}-categoria-${index}`}>
@@ -92,10 +101,10 @@ const FilterProducts = ({ products, categories, onFilteredProducts }: FilterProd
                                 ))}
                             </select>
 
-                            <Button className="ms-4 min-h-[46px]" onClick={clearFilters} variant="outline">
+                            <Button className=" min-h-[46px]" onClick={clearFilters} variant="outline">
                                 Limpar Filtros
                             </Button>
-                            <Button className="ms-4 min-h-[46px]" onClick={() => setSearchAdvancedIsOpen(!searchAdvancedIsOpen)} variant="default">
+                            <Button className=" min-h-[46px]" onClick={() => setSearchAdvancedIsOpen(!searchAdvancedIsOpen)} variant="default">
                                 Filtros Avançados
                             </Button>
 
@@ -103,7 +112,7 @@ const FilterProducts = ({ products, categories, onFilteredProducts }: FilterProd
                     </div>
 
                     {searchAdvancedIsOpen && (
-                        <div className="mt-4 flex gap-4 justify-end border-t py-4">
+                        <div className="mt-4 flex flex-col gap-4 justify-end border-t py-4 ">
                             <select name="faixaPreco" id="faixaPreco" value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}>
                                 <option value="todos">Faixa de Preço</option>
                                 <option value="0-50">R$ 0,00 - R$ 50,00</option>
@@ -111,7 +120,7 @@ const FilterProducts = ({ products, categories, onFilteredProducts }: FilterProd
                                 <option value="100-200">R$ 100,00 - R$ 200,00</option>
                                 <option value="200+">Acima de R$ 200,00</option>
                             </select>
-                            <select name="tamanho" id="tamanho" onChange={(e) => setSizesFilter(e.target.value as "PP" | "P" | "M" | "G" | "GG" | "todos")} value={sizesFilter}>
+                            <select name="tamanho" id="tamanho" onChange={(e) => setSizesFilter(e.target.value as "PP" | "P" | "M" | "G" | "GG" | "todos")} value={sizesFilter}>    
                                 <option value="todos">Tamanhos</option>
                                 <option value="PP">PP</option>
                                 <option value="P">P</option>

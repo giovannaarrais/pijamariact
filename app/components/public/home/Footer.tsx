@@ -25,7 +25,7 @@ const Footer = () => {
         <div>
           <Link href="https://giovannaarrais.vercel.app/" target="_blank">
             <Image 
-              src="/logo_ga.webp"
+              src="/logo_ga_new.png"
               alt="Logo"
               width={50}
               height={50}

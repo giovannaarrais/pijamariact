@@ -1,16 +1,22 @@
+import FilterProducts from "@/app/components/admin/filterProducts"
 import Container from "@/app/components/public/Container"
 import HeroTitleSubpage from "@/app/components/public/HeroTitleSubpage"
 import ProductGrid from "@/app/components/public/products/ProductGrid"
-import { listActiveProducts } from "@/data/products/get"
+import { listActiveProducts, listProducts } from "@/data/products/get"
+import { listActiveCategories } from "@/data/categories/get"
+import { AlertEmptyData } from "@/app/components/admin/alertEmptyData"
+import { Shirt } from "lucide-react"
 
 export default async function CatalogPage () {
-    const products = await listActiveProducts()
+    const [products, categories] = await Promise.all([
+        listActiveProducts(),
+        listActiveCategories(),
+    ])
+    if(!products) return <AlertEmptyData title="Nenhum produto encontrado" description="Tente novamente mais tarde" icon={<Shirt size={50} />} />
     return (
         <section>
             <HeroTitleSubpage title="Catálogo" desc="Confira nossos produtos" buttonBack/>
-            <Container extraClass="py-2!">
-                <ProductGrid extraClass="lg:grid-cols-4!" products={products}/>
-            </Container>
+            <ProductGrid products={products} categories={categories}/>
         </section>
     )
 }

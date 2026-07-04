@@ -45,7 +45,24 @@ const Products = ({ products }: ProductsGridProps) => {
           </p>
         </motion.div>
 
-        <ProductGrid products={products}/>
+        <div className={` grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6`}>
+            {products.map((product, i) => {
+              if(!product.imageUrl) return ;
+
+              return (
+                <motion.div
+                  key={product.id}
+                  className="group bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              )
+            })}
+          </div>
        
         <div className="mt-10 text-center">
             <Link

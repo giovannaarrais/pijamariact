@@ -165,20 +165,25 @@ select:focus{
 
 
 
-.products-box .swiper-navigation-icon path{
+.products-box .swiper-navigation-icon path,
+#catalogo .swiper-navigation-icon path{
   fill: darkgray !important;
 }   
-.products-box .swiper-navigation-icon{
+.products-box .swiper-navigation-icon,
+#catalogo .swiper-navigation-icon{
   width: 16px !important;
 } 
 
 .products-box .swiper-button-next,
-.products-box .swiper-button-prev{
+.products-box .swiper-button-prev,
+#catalogo .swiper-button-next,
+#catalogo .swiper-button-prev{
   top: auto !important;
   bottom: 0 !important;
 }
 
-.products-box .swiper-button-prev{
+.products-box .swiper-button-prev,
+#catalogo .swiper-button-prev{
   left: auto !important;
   right: 2.5rem !important;
 }

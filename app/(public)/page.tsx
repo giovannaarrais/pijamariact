@@ -12,7 +12,7 @@ import Products from "../components/public/products/Products";
 export default async function Home() {
 
   const [products, categories, testimonials] = await Promise.all([
-    listActiveProducts(6),
+    listActiveProducts(5),
     listActiveCategories(),
     listFeedbacks()
   ]);

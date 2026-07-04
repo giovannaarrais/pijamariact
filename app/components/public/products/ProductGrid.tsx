@@ -13,22 +13,33 @@ import Image from "next/image";
 import { Navigation } from "swiper/modules";
 import Link from "next/link";
 import ProductCard from "./ProductCard";
+import { Category } from "@/app/types/catalog";
+import FilterProducts from "../../admin/filterProducts";
+import { useState } from "react";
 
 interface ProductsGridProps {
   products: ProductWithCategory[] | null;
-  extraClass?: string
+  categories?: Category[] | null;
 }
 
-const ProductGrid = ({ products, extraClass }: ProductsGridProps) => {
+const ProductGrid = ({ products, categories }: ProductsGridProps) => {
   if (!products || products.length <= 0) {
     return null;
   }
+  const [filteredProducts, setFilteredProducts] = useState<ProductWithCategory[]>(products);
 
   return (
     <>
+
       <div className="px-10 products-box">
-        <div className={` ${extraClass || ''} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6`}>
-          {products.map((product, i) => {
+
+        <div className="flex lg:flex-row flex-col gap-8 xl:px-20">
+          <div className="lg:max-w-[350px] w-full">
+            <FilterProducts products={products} categories={categories} onFilteredProducts={setFilteredProducts} exibicaoFront />
+          </div>
+
+          <div className={`grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-6  `}>
+          {filteredProducts.map((product, i) => {
             if(!product.imageUrl) return ;
             
 
@@ -46,6 +57,7 @@ const ProductGrid = ({ products, extraClass }: ProductsGridProps) => {
             </motion.div>
             )
           })}
+        </div>
         </div>
       </div>
     </>
