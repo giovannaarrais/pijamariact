@@ -165,10 +165,14 @@ select:focus{
 
 
 
-.products-box .swiper-navigation-icon path,
-#catalogo .swiper-navigation-icon path{
+.swiper-navigation-icon path,
+.swiper-navigation-icon path{
   fill: darkgray !important;
 }   
+.swiper-navigation-icon{
+    height: 30px !important;
+    width: 35px !important;
+}
 .products-box .swiper-navigation-icon,
 #catalogo .swiper-navigation-icon{
   width: 16px !important;
@@ -203,3 +207,18 @@ select:focus{
   position: relative;
   transform: rotateX(180deg);
 }
+
+
+#testimonials .swiper-button-prev,
+#testimonials .swiper-button-next{
+  top: 20px !important;
+  bottom: auto !important;
+}
+#testimonials .swiper-button-prev{
+  right: 3rem !important;
+  left: auto !important;
+}
+#testimonials .swiper-button-next{
+  right: 0rem !important;
+}
+  

@@ -13,8 +13,8 @@ const Header = () => {
   const menuItems =[
     { name: "Início", href: "/" },
     { name: "Catálogo", href: "/catalogo" },
-    { name: "Categorias", href: "/categorias" },
-    { name: "Contato", href: "/contato" },
+    { name: "Categorias", href: "/#categorias" },
+    { name: "Contato", href: "/#contato" },
   ]
 
   return (

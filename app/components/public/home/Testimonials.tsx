@@ -44,7 +44,7 @@ const Testimonials = ({ testimonials }: TestimonialsProps) => {
     <section id="testimonials" className="py-20 pb-0 px-4 bg-card">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          className="text-center mb-14"
+          className="text-center mb-7"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -56,19 +56,27 @@ const Testimonials = ({ testimonials }: TestimonialsProps) => {
           <div className="w-16 h-0.5 bg-primary mx-auto" />
         </motion.div>
 
-        <div className="py-5 ">
+        <div className="">
            <Swiper
-            className="h-full"
+            className="h-full py-12!"
             spaceBetween={50}
-            slidesPerView={3}
+            slidesPerView={1}
             speed={1000}
             loop={true}
+            navigation={true}
+            modules={[Navigation]}
             autoplay={{
               delay: 5000,
               disableOnInteraction: false,
             }}
-            // navigation={true}
-            // modules={[Navigation]}
+            breakpoints={{
+              992: {
+                slidesPerView: 3
+              },
+              768: {
+                slidesPerView: 2
+              }
+            }}
           >
 
           {testimonials.map((t, i) => (

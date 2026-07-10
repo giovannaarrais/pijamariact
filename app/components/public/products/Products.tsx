@@ -45,24 +45,51 @@ const Products = ({ products }: ProductsGridProps) => {
           </p>
         </motion.div>
 
-        <div className={` grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6`}>
+        {/* <div className={` grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6`}> */}
+          <Swiper
+            className="h-full py-12!"
+            spaceBetween={50}
+            slidesPerView={1}
+            speed={1000}
+            loop={true}
+            navigation={true}
+            modules={[Navigation]}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              575: {
+                slidesPerView: 2,
+                spaceBetween:20
+              },
+              992: {
+                slidesPerView: 3
+              },
+              1400: {
+                slidesPerView: 5
+              },
+              
+            }}>
             {products.map((product, i) => {
               if(!product.imageUrl) return ;
 
               return (
-                <motion.div
-                  key={product.id}
-                  className="group bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
+                <SwiperSlide>
+                  <motion.div
+                    key={product.id}
+                    className="group bg-card rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 0.4 }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                </SwiperSlide>
               )
             })}
-          </div>
+          </Swiper>
        
         <div className="mt-10 text-center">
             <Link
