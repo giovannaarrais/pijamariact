@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import { Category, ProductWithCategory } from "@/app/types/catalog";
+import { useSearchParams } from "next/navigation";
 
 interface FilterProductsProps {
     products: ProductWithCategory[] | null | undefined;
@@ -14,12 +15,15 @@ interface FilterProductsProps {
 }
 
 const FilterProducts = ({ products, categories, onFilteredProducts, exibicaoFront }: FilterProductsProps) => {
+    const searchParams = useSearchParams();
+    const categoryParams = searchParams.get('category');
     const [searchValue, setSearchValue] = useState<string>("")
     const [statusFilter, setStatusFilter] = useState<string>("todos")
-    const [categoryFilter, setCategoryFilter] = useState<string>("todos")
+    const [categoryFilter, setCategoryFilter] = useState<string>(categoryParams ?? "todos")
     const [searchAdvancedIsOpen, setSearchAdvancedIsOpen] = useState<boolean>(false);
     const [priceFilter, setPriceFilter] = useState<string>("todos");
     const [sizesFilter, setSizesFilter] = useState<"PP" | "P" | "M" | "G" | "GG" | "todos">("todos");
+
 
     if (!products) return null;
 
@@ -62,6 +66,10 @@ const FilterProducts = ({ products, categories, onFilteredProducts, exibicaoFron
         setPriceFilter("todos")
         setSizesFilter("todos")
     }
+
+    useEffect(() => {
+        setCategoryFilter(categoryParams ?? "todos");
+    }, [categoryParams]);
 
     useEffect(() => {
         onFilteredProducts(filteredProducts);

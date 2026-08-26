@@ -4,11 +4,6 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import * as schema from "@/db/schema"
 import { admin } from "better-auth/plugins";
 
-// Singleton global para evitar reinicialização do Better Auth em cada hot-reload
-const globalForAuth = globalThis as unknown as {
-    auth: ReturnType<typeof betterAuth> | undefined
-}
-
 const authInstance = betterAuth({
     emailAndPassword: {
         enabled: true
@@ -58,8 +53,14 @@ const authInstance = betterAuth({
     ]
 });
 
+// Singleton global para evitar reinicialização do Better Auth em cada hot-reload
+type AuthInstance = typeof authInstance;
+const globalForAuth = globalThis as unknown as {
+    auth: AuthInstance | undefined
+};
+
 if (process.env.NODE_ENV !== 'production') {
-    globalForAuth.auth = authInstance
+    globalForAuth.auth = authInstance;
 }
 
 export const auth = globalForAuth.auth ?? authInstance;

@@ -4,17 +4,32 @@ import { auth } from "@/lib/auth"
 import { UpdateUserSchema } from "./schema"
 import { revalidatePath } from "next/cache"
 
-export const updateUserAction = async ({userId, data}: UpdateUserSchema) => {
-    try{
+type AdminApi = {
+    adminUpdateUser: (opts: {
+        body: {
+            userId: string;
+            data: {
+                name?: string;
+                email?: string;
+                role?: string;
+                status?: string;
+            };
+        };
+    }) => Promise<unknown>;
+};
 
-        if(!userId){
+export const updateUserAction = async ({ userId, data }: UpdateUserSchema) => {
+    try {
+        if (!userId) {
             return {
                 success: false,
                 message: "ID do usuário inválido!"
-            }
+            };
         }
 
-        await auth.api.adminUpdateUser({
+        const adminApi = auth.api as unknown as AdminApi;
+
+        await adminApi.adminUpdateUser({
             body: {
                 userId: userId,
                 data: {
@@ -24,20 +39,20 @@ export const updateUserAction = async ({userId, data}: UpdateUserSchema) => {
                     status: data.status
                 }
             }
-        })
+        });
 
-        revalidatePath("/admin/usuarios")
+        revalidatePath("/admin/usuarios");
 
         return {
             success: true,
             message: "Usuário atualizado com sucesso!"
-        }
+        };
 
-    }  catch(error){
-        console.log(error)
+    } catch (error) {
+        console.log(error);
         return {
             success: false,
             message: "Erro ao editar usuário!"
-        }
-    } 
-}
+        };
+    }
+};

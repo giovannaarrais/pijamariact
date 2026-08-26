@@ -4,23 +4,32 @@ import { auth } from "@/lib/auth"
 import { revalidatePath } from "next/cache"
 import { headers } from "next/headers"
 
-export async function deleteUserAction(userId: string){
-    try {
-        await auth.api.removeUser({
-            body: { userId },
-            headers: await headers() // ← passa os cookies da sessão atual
-        })
+type AdminApi = {
+    removeUser: (opts: {
+        body: { userId: string };
+        headers: Headers;
+    }) => Promise<unknown>;
+};
 
-        revalidatePath("/admin/usuarios") // ao deletar um usuário, atualiza a página de usuários
+export async function deleteUserAction(userId: string) {
+    try {
+        const adminApi = auth.api as unknown as AdminApi;
+
+        await adminApi.removeUser({
+            body: { userId },
+            headers: await headers()
+        });
+
+        revalidatePath("/admin/usuarios");
         return {
             success: true,
             message: "Usuário deletado com sucesso!"
-        }
+        };
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return {
             success: false,
             message: "Erro ao deletar usuário!"
-        }
+        };
     }
 }

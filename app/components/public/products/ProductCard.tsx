@@ -66,7 +66,6 @@ export default function ProductCard ({ product }: ProductCardProps) {
             <div className="flex items-center justify-between mt-2">
                 <Link
                     href={`/catalogo/${product.id}`}
-                    target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-xs font-body tracking-wider uppercase text-primary hover:opacity-80 transition-opacity"
                 >

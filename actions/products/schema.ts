@@ -14,6 +14,8 @@ export const productFormSchema = z.object({
         .optional(),
     sizes: z.array(productSizeSchema).min(1, "Selecione pelo menos um tamanho"),
     active: z.boolean(),
+    emphasis: z.boolean().default(false), // destaque
+    available: z.boolean().default(true), // disponível
 });
 
 export const productUpdateSchema = productFormSchema.extend({

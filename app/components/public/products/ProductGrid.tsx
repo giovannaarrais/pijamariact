@@ -26,6 +26,8 @@ const ProductGrid = ({ products, categories }: ProductsGridProps) => {
   if (!products || products.length <= 0) {
     return null;
   }
+  
+  
   const [filteredProducts, setFilteredProducts] = useState<ProductWithCategory[]>(products);
 
   return (

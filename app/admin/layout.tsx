@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "Área Administrativa da Pijamaria",
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
   children,
 }: Readonly<{

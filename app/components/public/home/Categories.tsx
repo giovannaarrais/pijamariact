@@ -4,6 +4,7 @@ import { Category } from "@/app/types/catalog";
 import { listActiveCategories } from "@/data/categories/get";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 const categories = [
   { name: "Pijamas", image: '/assets/product-pijama-1.jpg', description: "Conjuntos confortáveis para suas noites" },
@@ -48,7 +49,8 @@ const Categories = ({categories}: CategoriesProps) => {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.5 }}
               >
-                <div className="aspect-[3/4] overflow-hidden">
+                <Link href={`/catalogo?category=${encodeURIComponent(cat.name)}`}>
+                  <div className="aspect-[3/4] overflow-hidden">
                   <Image
                     src={cat.imageUrl}
                     alt={cat.name}
@@ -61,6 +63,7 @@ const Categories = ({categories}: CategoriesProps) => {
                   <h3 className="font-heading text-2xl text-card mb-1">{cat.name}</h3>
                   <p className="font-body text-sm text-card/80">{cat.description}</p>
                 </div>
+                </Link>
               </motion.div>
             )
           })}

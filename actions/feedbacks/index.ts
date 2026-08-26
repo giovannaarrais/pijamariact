@@ -13,7 +13,7 @@ async function assertAdmin() {
         headers: await headers(),
     });
 
-    const role = session?.user.role;
+    const role = (session?.user as { role?: string } | undefined)?.role;
 
     if (role !== "admin" && role !== "master") {
         throw new Error("Voce nao tem permissao para executar esta acao.");
