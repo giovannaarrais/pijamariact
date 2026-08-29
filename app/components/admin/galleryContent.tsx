@@ -142,7 +142,7 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
             }
 
         } catch (error) {
-            .log(error)
+            console.log(error)
             setErrorMessage("Ocorreu um erro inesperado: " + error)
         }
     }
