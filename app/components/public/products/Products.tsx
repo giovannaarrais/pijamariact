@@ -20,9 +20,14 @@ interface ProductsGridProps {
 }
 
 const Products = ({ products }: ProductsGridProps) => {
+
+    console.log("PRODUTOS aberto", products)
+    
   if (!products || products.length <= 0) {
+    console.log("PRODUTOS condicao", products)
     return null;
   }
+  
 
 
 

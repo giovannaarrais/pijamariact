@@ -62,7 +62,7 @@ export function TableUsers({users, deleteUser, updateUser}: TableUsersProps){
     })
     
     function editUser(values: UpdateUserSchema){
-        console.log(values)
+        // console.log(values)
         
     }
         

@@ -17,6 +17,8 @@ export default async function Home() {
     listFeedbacks()
   ]);
 
+  console.log("PRODUTOS", products)
+
   return (
     <div className="">
         <Hero />

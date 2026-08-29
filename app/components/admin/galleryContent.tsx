@@ -105,7 +105,6 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
                 setTimeout(() => setErrorMessage(null), 3000);
             }
         } catch (error) {
-            console.error(error);
             setErrorMessage("Erro ao deletar imagens: " + error);
             setTimeout(() => setErrorMessage(null), 3000);
         }
@@ -143,7 +142,7 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
             }
 
         } catch (error) {
-            console.log(error)
+            .log(error)
             setErrorMessage("Ocorreu um erro inesperado: " + error)
         }
     }
@@ -179,7 +178,6 @@ function GalleryContent({ imagesSelecteds }: GalleryContentProps) {
         loadImages()
     }, [])
 
-    console.log("selected images array: ",selectedImages)
 
     return (
         <AlertDialog>

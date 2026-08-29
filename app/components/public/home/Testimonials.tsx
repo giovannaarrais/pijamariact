@@ -38,7 +38,6 @@ interface TestimonialsProps {
 
 const Testimonials = ({ testimonials }: TestimonialsProps) => {
   if(!testimonials || testimonials.length === 0) return null;
-  console.log(testimonials)
 
   return (
     <section id="testimonials" className="py-20 pb-0 px-4 bg-card">

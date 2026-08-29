@@ -16,7 +16,6 @@ export async function POST(request: Request) {
         const body = await request.formData()
         const file = body.get("file") as File | null
 
-        console.log("file", file)
 
         if(!file) {
             return NextResponse.json({
@@ -27,7 +26,6 @@ export async function POST(request: Request) {
             })
         }
 
-        console.log("body e file",body, file)
 
         const filePath = `pijamas/${Date.now()}-${file.name}`
         const { data, error } = await supabase.storage.from("produtos").upload(filePath, file, {
@@ -36,7 +34,6 @@ export async function POST(request: Request) {
         })
 
         if (error){
-            console.log(error)
             return NextResponse.json({
                 success: false,
                 message: "Este tipo de arquivo não é permitido. Por favor, utilize imagens (png, jpg, jpeg, webp)",
@@ -56,7 +53,6 @@ export async function POST(request: Request) {
         
 
     } catch (error){
-        console.log("ERROR", error)
 
         return NextResponse.json({
             success: false,
@@ -93,7 +89,6 @@ export async function DELETE(request: Request) {
         const { data, error } = await supabase.storage.from("produtos").remove(paths);
 
         if (error) {
-            console.log("Erro ao apagar arquivos:", error);
             return NextResponse.json({
                 success: false,
                 message: "Erro ao apagar os arquivos no storage",
@@ -108,7 +103,6 @@ export async function DELETE(request: Request) {
         }, { status: 200 })
 
     } catch (error: any) {
-        console.log("ERROR DELETE", error);
         return NextResponse.json({
             success: false,
             message: "Erro ao processar a requisição de exclusão",

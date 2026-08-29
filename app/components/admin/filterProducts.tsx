@@ -55,7 +55,6 @@ const FilterProducts = ({ products, categories, onFilteredProducts, exibicaoFron
         ? filteredProductsByPrice
         : filteredProductsByPrice.filter((product) => product.sizes.includes(sizesFilter)); 
 
-    console.log(sizesFilter, filteredProductsBySizes, products[0].sizes)
         
     filteredProducts = filteredProductsBySizes || filteredProductsByPrice || filteredProductsByCategory || filteredProductsByStatus || filteredProducts
         
